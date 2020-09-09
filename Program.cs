@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using GlBindings;
 
 namespace openGlTest
@@ -30,6 +31,9 @@ namespace openGlTest
                 const int GL_VENDOR = 0x1F00;
                 Console.WriteLine($"OpenGL reports the vendor responsible for this implementation as: {Gl.GetGlString(GL_VENDOR)}");
             }
+            Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
+
+            _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
 
             while (!Glfw.WindowShouldClose(window))
             {
@@ -42,6 +46,14 @@ namespace openGlTest
         public static void ErrorCallback(int errorCode, string description)
         {
             Console.WriteLine($"ERROR:{errorCode} : {description}");
+        }
+        public static void KeyCallback(IntPtr window, int key, int scancode, int action, int modifiers)
+        {
+            //Console.WriteLine($"Key: {key} , Action: {action}");
+            if (key == 69 && action == 1)
+            {
+                Glfw.SetWindowShouldClose(window, 1);
+            }
         }
     }
 }
