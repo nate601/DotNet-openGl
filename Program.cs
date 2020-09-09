@@ -33,8 +33,7 @@ namespace openGlTest
 
             while (!Glfw.WindowShouldClose(window))
             {
-
-		Glfw.PollEvents();
+                Glfw.PollEvents();
             }
 
             Glfw.Terminate();

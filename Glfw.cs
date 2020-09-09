@@ -30,21 +30,21 @@ namespace GlBindings
         public static extern void MakeContextCurrent(IntPtr window);
         [DllImport("glfw", EntryPoint = "glfwGetProcAddress", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr GetGlFunctionAddress(string processName);
-	[DllImport("glfw", EntryPoint = "glfwExtensionSupported")]
-	public static extern bool IsGlExtensionSupported(string extensionName);
-	[DllImport("glfw", EntryPoint = "glfwPollEvents")]
-	public static extern void PollEvents();
+        [DllImport("glfw", EntryPoint = "glfwExtensionSupported")]
+        public static extern bool IsGlExtensionSupported(string extensionName);
+        [DllImport("glfw", EntryPoint = "glfwPollEvents")]
+        public static extern void PollEvents();
         #endregion
     }
     static class Gl
     {
         public static void LoadGl()
         {
-	    _GetGlString = GetGlMethod<glGetGlString>("glGetString");
+            _GetGlString = GetGlMethod<glGetGlString>("glGetString");
         }
         private static T GetGlMethod<T>(string procName)
         {
-	    Console.WriteLine($"Attempting to find function {procName} for delegate {typeof(T).Name}");
+            Console.WriteLine($"Attempting to find function {procName} for delegate {typeof(T).Name}");
             var pointer = Glfw.GetGlFunctionAddress(procName);
             if (pointer == IntPtr.Zero)
             {
@@ -52,17 +52,17 @@ namespace GlBindings
                 return default(T);
             }
             Console.WriteLine($"SUCCESS: Pointer {procName} for delegate {typeof(T).Name} is {pointer}");
-	    return Marshal.GetDelegateForFunctionPointer<T>(pointer);
+            return Marshal.GetDelegateForFunctionPointer<T>(pointer);
         }
-#region internalFunctions
+        #region internalFunctions
         private static glDrawArrays _DrawArrays;
-	private static glGetGlString _GetGlString;
-#endregion
-#region Delegates
+        private static glGetGlString _GetGlString;
+        #endregion
+        #region Delegates
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal delegate void glDrawArrays(int mode, int first, int count);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-	internal delegate IntPtr glGetGlString(int gl_reference);
+        internal delegate IntPtr glGetGlString(int gl_reference);
         #endregion
         #region ExternalFunctions
         public static string GetGlString(int gl_reference) => Marshal.PtrToStringAuto(_GetGlString(gl_reference));
