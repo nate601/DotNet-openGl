@@ -54,7 +54,9 @@ namespace GlBindings
 
         private static T GetGlMethod<T>()
         {
+#pragma warning disable CS0618
             return GetGlMethod<T>(typeof(T).Name);
+#pragma warning restore CS0618
         }
 
         [Obsolete("Use GetGlMethod without the string name, strings should match in cpp and csharp")]
