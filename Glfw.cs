@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace GlBindings
 {
-    static class Glfw
+    internal static class Glfw
     {
         #region Delegates
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -40,7 +40,8 @@ namespace GlBindings
         public static extern IntPtr SetKeyCallback(IntPtr window, IntPtr cbFun);
         #endregion
     }
-    static class Gl
+
+    internal static class Gl
     {
         public static void LoadGl()
         {
