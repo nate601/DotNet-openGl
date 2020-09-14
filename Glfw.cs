@@ -39,6 +39,8 @@ namespace GlBindings
         public static extern void SetWindowShouldClose(IntPtr window, int value);
         [DllImport("glfw", EntryPoint = "glfwSetKeyCallback")]
         public static extern IntPtr SetKeyCallback(IntPtr window, IntPtr cbFun);
+        [DllImport("glfw", EntryPoint = "glfwSwapBuffers")]
+        public static extern void SwapBuffers(IntPtr window);
         #endregion
     }
 

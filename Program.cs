@@ -34,11 +34,14 @@ namespace openGlTest
             }
 
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
-
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
+
 
             while (!Glfw.WindowShouldClose(window))
             {
+                double time = Glfw.GetTime();
+
+                Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
             }
 
