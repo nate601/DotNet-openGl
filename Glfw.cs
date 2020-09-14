@@ -46,7 +46,14 @@ namespace GlBindings
         public static void LoadGl()
         {
             _GetGlString = GetGlMethod<glGetGlString>("glGetString");
+            _DrawArrays = GetGlMethod<glDrawArrays>();
         }
+
+        private static T GetGlMethod<T>()
+        {
+            return GetGlMethod<T>(typeof(T).Name);
+        }
+
         private static T GetGlMethod<T>(string procName)
         {
             Console.WriteLine($"Attempting to find function {procName} for delegate {typeof(T).Name}");
