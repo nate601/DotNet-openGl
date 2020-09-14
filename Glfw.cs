@@ -87,6 +87,10 @@ namespace GlBindings
         {
             return Marshal.PtrToStringAuto(_GetGlString(gl_reference));
         }
+        public static void DrawArrays(int mod, int first, int count)
+        {
+            _DrawArrays(mod, first, count);
+        }
         #endregion
     }
 }
