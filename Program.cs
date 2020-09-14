@@ -8,7 +8,7 @@ namespace openGlTest
     {
         static int Main(string[] args)
         {
-            Glfw.SetErrorCallback(ErrorCallback);
+            _ = Glfw.SetErrorCallback(ErrorCallback);
             if (Glfw.Init())
             {
                 Console.WriteLine("Glfw has successfully initialized");
@@ -31,6 +31,7 @@ namespace openGlTest
                 const int GL_VENDOR = 0x1F00;
                 Console.WriteLine($"OpenGL reports the vendor responsible for this implementation as: {Gl.GetGlString(GL_VENDOR)}");
             }
+
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
 
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
