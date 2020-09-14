@@ -8,7 +8,8 @@ namespace openGlTest
     {
         static int Main(string[] args)
         {
-            _ = Glfw.SetErrorCallback(ErrorCallback);
+            Glfw.ErrorFunc errorCallbackDelegate = ErrorCallback;
+            _ = Glfw.SetErrorCallback(Marshal.GetFunctionPointerForDelegate(errorCallbackDelegate));
             if (Glfw.Init())
             {
                 Console.WriteLine("Glfw has successfully initialized");

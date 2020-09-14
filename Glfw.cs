@@ -18,7 +18,7 @@ namespace GlBindings
         [DllImport("glfw", EntryPoint = "glfwTerminate")]
         public static extern void Terminate();
         [DllImport("glfw", EntryPoint = "glfwSetErrorCallback")]
-        public static extern ErrorFunc SetErrorCallback(ErrorFunc callback);
+        public static extern ErrorFunc SetErrorCallback(IntPtr callback);
         [DllImport("glfw", EntryPoint = "glfwCreateWindow")]
         public static extern IntPtr CreateWindow(int width, int height, string title, IntPtr monitor = default, IntPtr share = default);
         [DllImport("glfw", EntryPoint = "glfwWindowShouldClose")]
