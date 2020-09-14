@@ -11,6 +11,7 @@ namespace GlBindings
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate void KeyCallback(IntPtr window, int key, int scanCode, int action, int mods);
         #endregion
+
         #region functions
         [DllImport("glfw", EntryPoint = "glfwInit")]
         public static extern bool Init();
@@ -45,7 +46,7 @@ namespace GlBindings
     {
         public static void LoadGl()
         {
-            _GetGlString = GetGlMethod<glGetGlString>("glGetString");
+            _GetGlString = GetGlMethod<glGetString>();
             _DrawArrays = GetGlMethod<glDrawArrays>();
         }
 
@@ -54,6 +55,7 @@ namespace GlBindings
             return GetGlMethod<T>(typeof(T).Name);
         }
 
+        [Obsolete("Use GetGlMethod without the string name, strings should match in cpp and csharp")]
         private static T GetGlMethod<T>(string procName)
         {
             Console.WriteLine($"Attempting to find function {procName} for delegate {typeof(T).Name}");
@@ -69,14 +71,14 @@ namespace GlBindings
 
         #region internalFunctions
         private static glDrawArrays _DrawArrays;
-        private static glGetGlString _GetGlString;
+        private static glGetString _GetGlString;
         #endregion
 
         #region Delegates
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal delegate void glDrawArrays(int mode, int first, int count);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal delegate IntPtr glGetGlString(int gl_reference);
+        internal delegate IntPtr glGetString(int gl_reference);
         #endregion
         #region ExternalFunctions
         public static string GetGlString(int gl_reference)
