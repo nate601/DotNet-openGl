@@ -19,7 +19,7 @@ namespace openGlTest
                 Console.WriteLine("Glfw has failed to successfully initialize");
                 return -1;
             }
-            var window = Glfw.CreateWindow(640, 480, ".NET Core GL");
+            IntPtr window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
                 Console.WriteLine("Error creating context window.");
@@ -27,7 +27,7 @@ namespace openGlTest
             }
             Glfw.MakeContextCurrent(window);
             Gl.LoadGl();
-            var glewErr  = Glew.GlewInit();
+            int glewErr = Glew.GlewInit();
 
             Console.WriteLine(glewErr);
             {
@@ -37,7 +37,14 @@ namespace openGlTest
 
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
-
+            {
+                const int GL_DEPTH_TEST = 0x0B71;
+                const int GL_LESS = 0x0201;
+                Gl.Enable(GL_DEPTH_TEST);
+                Gl.DepthFunction(GL_LESS);
+                int bufferIndex = Gl.GenBuffers(1);
+                Console.WriteLine($"Buffer assigned {bufferIndex}");
+            }
 
             while (!Glfw.WindowShouldClose(window))
             {

@@ -9,6 +9,9 @@ namespace GlBindings
         {
             _GetGlString = GetGlMethod<glGetString>();
             _DrawArrays = GetGlMethod<glDrawArrays>();
+            _Enable = GetGlMethod<glEnable>();
+            _DepthFunction = GetGlMethod<glDepthFunc>();
+            _GenBuffers = GetGlMethod<glGenBuffers>();
         }
 
         private static T GetGlMethod<T>()
@@ -35,6 +38,9 @@ namespace GlBindings
         #region internalFunctions
         private static glDrawArrays _DrawArrays;
         private static glGetString _GetGlString;
+        private static glEnable _Enable;
+        private static glDepthFunc _DepthFunction;
+        private static glGenBuffers _GenBuffers;
         #endregion
 
         #region Delegates
@@ -42,7 +48,14 @@ namespace GlBindings
         internal delegate void glDrawArrays(int mode, int first, int count);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal delegate IntPtr glGetString(int gl_reference);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal delegate void glEnable(int cap);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal delegate void glDepthFunc(int depthFunctionMethod);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal delegate void glGenBuffers(int size, ref int buffers);
         #endregion
+
         #region ExternalFunctions
         public static string GetGlString(int gl_reference)
         {
@@ -52,6 +65,21 @@ namespace GlBindings
         {
             _DrawArrays(mod, first, count);
         }
+        public static void Enable(int cap)
+        {
+            _Enable(cap);
+        }
+        public static void DepthFunction(int depthFunctionMethod)
+        {
+            _DepthFunction(depthFunctionMethod);
+        }
+        public static int GenBuffers(int size)
+        {
+            int buffers = -1;
+            _GenBuffers(size, ref buffers);
+            return buffers;
+        }
+
         #endregion
     }
 }
