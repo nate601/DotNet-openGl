@@ -27,7 +27,9 @@ namespace openGlTest
             }
             Glfw.MakeContextCurrent(window);
             Gl.LoadGl();
+            var glewErr  = Glew.GlewInit();
 
+            Console.WriteLine(glewErr);
             {
                 const int GL_VENDOR = 0x1F00;
                 Console.WriteLine($"OpenGL reports the vendor responsible for this implementation as: {Gl.GetGlString(GL_VENDOR)}");
