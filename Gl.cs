@@ -12,6 +12,8 @@ namespace GlBindings
             _Enable = GetGlMethod<glEnable>();
             _DepthFunction = GetGlMethod<glDepthFunc>();
             _GenBuffers = GetGlMethod<glGenBuffers>();
+            _BindBuffer = GetGlMethod<glBindBuffer>();
+            _BufferData = GetGlMethod<glBufferData>();
         }
 
         private static T GetGlMethod<T>()
@@ -31,7 +33,7 @@ namespace GlBindings
                 Console.WriteLine($"FAILURE: Unable to find function {procName} for delegate {typeof(T).Name}");
                 return default;
             }
-            Console.WriteLine($"SUCCESS: Pointer {procName} for delegate {typeof(T).Name} is {pointer}");
+            Console.WriteLine($"SUCCESS: Pointer {procName} for delegate {typeof(T).Name} is {pointer.ToString("X")}");
             return Marshal.GetDelegateForFunctionPointer<T>(pointer);
         }
 
@@ -41,20 +43,27 @@ namespace GlBindings
         private static glEnable _Enable;
         private static glDepthFunc _DepthFunction;
         private static glGenBuffers _GenBuffers;
+        private static glBindBuffer _BindBuffer;
+        private static glBufferData _BufferData;
         #endregion
 
         #region Delegates
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal delegate void glDrawArrays(int mode, int first, int count);
+        private delegate void glDrawArrays(int mode, int first, int count);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal delegate IntPtr glGetString(int gl_reference);
+        private delegate IntPtr glGetString(int gl_reference);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal delegate void glEnable(int cap);
+        private delegate void glEnable(int cap);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal delegate void glDepthFunc(int depthFunctionMethod);
+        private delegate void glDepthFunc(int depthFunctionMethod);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal delegate void glGenBuffers(int size, ref int buffers);
+        private delegate void glGenBuffers(int size, ref int buffers);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glBindBuffer(int type, int bufferIndex);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glBufferData(int type, int size, ref float[] data, int usage);
         #endregion
+
 
         #region ExternalFunctions
         public static string GetGlString(int gl_reference)
@@ -73,11 +82,19 @@ namespace GlBindings
         {
             _DepthFunction(depthFunctionMethod);
         }
-        public static int GenBuffers(int size)
+        public static int GenBuffers(int size = 1)
         {
             int buffers = -1;
             _GenBuffers(size, ref buffers);
             return buffers;
+        }
+        public static void BindBuffer(int type, int bufferIndex)
+        {
+            _BindBuffer(type, bufferIndex);
+        }
+        public static void BufferData(int type, int size, ref float[] data, int usage)
+        {
+            _BufferData(type, size, ref data, usage);
         }
 
         #endregion

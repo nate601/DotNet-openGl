@@ -44,6 +44,15 @@ namespace openGlTest
                 Gl.DepthFunction(GL_LESS);
                 int bufferIndex = Gl.GenBuffers(1);
                 Console.WriteLine($"Buffer assigned {bufferIndex}");
+                const int GL_ARRAY_BUFFER = 0x8892;
+                const int GL_STATIC_DRAW = 0x88E4;
+                float[] points = {0.0f,  0.5f,  0.0f,
+                                  0.5f, -0.5f,  0.0f,
+                                 -0.5f, -0.5f,  0.0f
+                                 };
+                Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
+                Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), ref points, GL_STATIC_DRAW);
+
             }
 
             while (!Glfw.WindowShouldClose(window))
