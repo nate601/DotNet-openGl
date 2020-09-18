@@ -14,6 +14,10 @@ namespace GlBindings
             _GenBuffers = GetGlMethod<glGenBuffers>();
             _BindBuffer = GetGlMethod<glBindBuffer>();
             _BufferData = GetGlMethod<glBufferData>();
+            _GenVertexArrays = GetGlMethod<glGenVertexArrays>();
+            _BindVertexArray = GetGlMethod<glBindVertexArray>();
+            _EnableVertexAttribArray = GetGlMethod<glEnableVertexAttribArray>();
+            _VertexAttribPointer = GetGlMethod<glVertexAttribPointer>();
         }
 
         private static T GetGlMethod<T>()
@@ -45,6 +49,10 @@ namespace GlBindings
         private static glGenBuffers _GenBuffers;
         private static glBindBuffer _BindBuffer;
         private static glBufferData _BufferData;
+        private static glGenVertexArrays _GenVertexArrays;
+        private static glBindVertexArray _BindVertexArray;
+        private static glEnableVertexAttribArray _EnableVertexAttribArray;
+        private static glVertexAttribPointer _VertexAttribPointer;
         #endregion
 
         #region Delegates
@@ -62,6 +70,14 @@ namespace GlBindings
         private delegate void glBindBuffer(int type, int bufferIndex);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBufferData(int type, int size, ref float[] data, int usage);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGenVertexArrays(int size, ref int arrays);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glBindVertexArray(int array);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glEnableVertexAttribArray(int index);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glVertexAttribPointer(int index, int size, int type, bool normalized, int stride, IntPtr pointer);
         #endregion
 
 
@@ -95,6 +111,26 @@ namespace GlBindings
         public static void BufferData(int type, int size, ref float[] data, int usage)
         {
             _BufferData(type, size, ref data, usage);
+        }
+        public static int GenVertexArrays(int size = 1)
+        {
+            int array = -1;
+            _GenVertexArrays(size, ref array);
+            return array;
+        }
+
+        //private delegate void glVertexAttribPointer(int index, int size, int type, bool normalized, int stride, IntPtr pointer);
+        public static void BindVertexArray(int array)
+        {
+            _BindVertexArray(array);
+        }
+        public static void EnableVertexAttribArray(int index)
+        {
+            _EnableVertexAttribArray(index);
+        }
+        public static void VertexAttribPointer(int index, int size, int type, bool normalized, int stride, IntPtr pointer)
+        {
+            _VertexAttribPointer(index, size, type, normalized, stride, pointer);
         }
 
         #endregion
