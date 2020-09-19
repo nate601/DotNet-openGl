@@ -8,7 +8,7 @@ namespace openGlTest
     {
         static int Main(string[] args)
         {
-            Glfw.ErrorFunc errorCallbackDelegate = ErrorCallback;
+            Glfw.ErrorFunc errorCallbackDelegate = GlfwErrorCallback;
             _ = Glfw.SetErrorCallback(Marshal.GetFunctionPointerForDelegate(errorCallbackDelegate));
             if (Glfw.Init())
             {
@@ -19,6 +19,7 @@ namespace openGlTest
                 Console.WriteLine("Glfw has failed to successfully initialize");
                 return -1;
             }
+            Glfw.WindowHint(0x00022007, 1);
             IntPtr window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
@@ -27,6 +28,9 @@ namespace openGlTest
             }
             Glfw.MakeContextCurrent(window);
             Gl.LoadGl();
+            Gl.Enable(0x92E0);
+            Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
+            Gl.DebugMessageCallback(Marshal.GetFunctionPointerForDelegate(glErrorCallbackDelegate));
             int glewErr = Glew.GlewInit();
 
             Console.WriteLine(glewErr);
@@ -60,7 +64,19 @@ namespace openGlTest
                 Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
                 const int GL_FLOAT = 0x1406;
                 Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, IntPtr.Zero);
-
+                const string vertex_shader =
+"#version 140\n" +
+"in vec3 vp;\n" +
+"void main() {\n" +
+"  gl_Position = vec4(vp, 1.0);\n" +
+"}\n";
+                Console.Write(vertex_shader);
+                Console.WriteLine();
+                int vs = Gl.CreateShader(0x8B31);
+                Gl.ShaderSource(vs, vertex_shader);
+                Gl.CompileShader(vs);
+                Console.WriteLine($"Status: {Gl.GetShader(vs, 0x8B4F)}");
+                // Console.Write(Gl.GetShaderInfoLog(vs));
             }
 
             while (!Glfw.WindowShouldClose(window))
@@ -74,9 +90,13 @@ namespace openGlTest
             Glfw.Terminate();
             return 0;
         }
-        public static void ErrorCallback(int errorCode, string description)
+        public static void GlfwErrorCallback(int errorCode, string description)
         {
             Console.WriteLine($"ERROR:{errorCode} : {description}");
+        }
+        public static void GlErrorCallback(int source, int type, int id, int severity, int length, string message, IntPtr userParam)
+        {
+            Console.WriteLine(message);
         }
         public static void KeyCallback(IntPtr window, int key, int scancode, int action, int modifiers)
         {

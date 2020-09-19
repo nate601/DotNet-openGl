@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace GlBindings
 {
@@ -18,6 +19,12 @@ namespace GlBindings
             _BindVertexArray = GetGlMethod<glBindVertexArray>();
             _EnableVertexAttribArray = GetGlMethod<glEnableVertexAttribArray>();
             _VertexAttribPointer = GetGlMethod<glVertexAttribPointer>();
+            _CreateShader = GetGlMethod<glCreateShader>();
+            _ShaderSource = GetGlMethod<glShaderSource>();
+            _CompileShader = GetGlMethod<glCompileShader>();
+            _GetShader = GetGlMethod<glGetShader>();
+            _GetShaderInfoLog = GetGlMethod<glGetShaderInfoLog>();
+            _DebugMessageCallback = GetGlMethod<glDebugMessageCallback>();
         }
 
         private static T GetGlMethod<T>()
@@ -53,6 +60,12 @@ namespace GlBindings
         private static glBindVertexArray _BindVertexArray;
         private static glEnableVertexAttribArray _EnableVertexAttribArray;
         private static glVertexAttribPointer _VertexAttribPointer;
+        private static glCreateShader _CreateShader;
+        private static glShaderSource _ShaderSource;
+        private static glCompileShader _CompileShader;
+        private static glGetShader _GetShader;
+        private static glGetShaderInfoLog _GetShaderInfoLog;
+        private static glDebugMessageCallback _DebugMessageCallback;
         #endregion
 
         #region Delegates
@@ -78,6 +91,21 @@ namespace GlBindings
         private delegate void glEnableVertexAttribArray(int index);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glVertexAttribPointer(int index, int size, int type, bool normalized, int stride, IntPtr pointer);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate int glCreateShader(int shaderType);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glShaderSource(int shader, int count, string[] content, IntPtr lengths);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glCompileShader(int shader);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGetShader(int shader, int parameterName, out int results);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        //private delegate void glGetShaderInfoLog(int shaderIndex, int maxLength, ref int size, [MarshalAs(UnmanagedType.LPStr)] ref StringBuilder infoLog);
+        private delegate void glGetShaderInfoLog(int shaderIndex, int maxLength, ref int size,out string infoLog);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public delegate void GlErrorCallbackDelegate(int source, int type, int id, int severeity, int length, string message, IntPtr userParams);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glDebugMessageCallback(IntPtr callback, IntPtr userParam);
         #endregion
 
 
@@ -118,8 +146,6 @@ namespace GlBindings
             _GenVertexArrays(size, ref array);
             return array;
         }
-
-        //private delegate void glVertexAttribPointer(int index, int size, int type, bool normalized, int stride, IntPtr pointer);
         public static void BindVertexArray(int array)
         {
             _BindVertexArray(array);
@@ -132,7 +158,41 @@ namespace GlBindings
         {
             _VertexAttribPointer(index, size, type, normalized, stride, pointer);
         }
+        public static int CreateShader(int shaderType)
+        {
+            return _CreateShader(shaderType);
+        }
+        public static void ShaderSource(int shaderIndex, string[] contents)
+        {
+            _ShaderSource(shaderIndex, contents.Length, contents, lengths: default);
+        }
+        public static void ShaderSource(int shaderIndex, string content)
+        {
+            _ShaderSource(shaderIndex, 1, new string[] { content }, default);
+        }
+        public static void CompileShader(int shaderIndex)
+        {
+            _CompileShader(shaderIndex);
+        }
+        public static int GetShader(int shaderIndex, int param)
+        {
+            //int result = -1;
+            _GetShader(shaderIndex, param, out int result);
+            return result;
+        }
 
+        public static string GetShaderInfoLog(int shaderIndex)
+        {
+//            StringBuilder result = new StringBuilder(255);
+            int size = -1;
+            _GetShaderInfoLog(shaderIndex, 128, ref size, out string result);
+            Console.WriteLine(size);
+            return result.ToString();
+        }
+        public static void DebugMessageCallback(IntPtr callback)
+        {
+            _DebugMessageCallback(callback, default);
+        }
         #endregion
     }
 }
