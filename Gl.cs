@@ -29,6 +29,8 @@ namespace GlBindings
             _CreateProgram = GetGlMethod<glCreateProgram>();
             _AttachShader = GetGlMethod<glAttachShader>();
             _LinkProgram = GetGlMethod<glLinkProgram>();
+            _Clear = GetGlMethod<glClear>();
+            _UseProgram = GetGlMethod<glUseProgram>();
         }
 
         private static T GetGlMethod<T>()
@@ -74,6 +76,8 @@ namespace GlBindings
         private static glCreateProgram _CreateProgram;
         private static glAttachShader _AttachShader;
         private static glLinkProgram _LinkProgram;
+        private static glClear _Clear;
+        private static glUseProgram _UseProgram;
         #endregion
 
         #region Delegates
@@ -120,6 +124,10 @@ namespace GlBindings
         private delegate void glAttachShader(int program, int shader);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glLinkProgram(int program);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glClear(int bitField);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glUseProgram(int program);
         #endregion
 
 
@@ -217,6 +225,14 @@ namespace GlBindings
         public static void LinkProgram(int program)
         {
             _LinkProgram(program);
+        }
+        public static void Clear(int bitField)
+        {
+            _Clear(bitField);
+        }
+        public static void UseProgram(int program)
+        {
+            _UseProgram(program);
         }
         #endregion
     }

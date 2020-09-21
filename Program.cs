@@ -115,6 +115,7 @@ namespace openGlTest
             {
                 double time = Glfw.GetTime();
 
+                Gl.Clear(0x00004000 | 0x00000100);
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
             }
