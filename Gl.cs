@@ -41,14 +41,15 @@ namespace GlBindings
         [Obsolete("Use GetGlMethod without the string name, strings should match in cpp and csharp")]
         private static T GetGlMethod<T>(string procName)
         {
-            Console.WriteLine($"Attempting to find function {procName} for delegate {typeof(T).Name}");
+            //Console.WriteLine($"Attempting to find function {procName} for delegate {typeof(T).Name}");
             IntPtr pointer = Glfw.GetGlFunctionAddress(procName);
             if (pointer == IntPtr.Zero)
             {
                 Console.WriteLine($"FAILURE: Unable to find function {procName} for delegate {typeof(T).Name}");
                 return default;
             }
-            Console.WriteLine($"SUCCESS: Pointer {procName} for delegate {typeof(T).Name} is {pointer.ToString("X")}");
+            Console.WriteLine($"{procName,-30} : {pointer.ToString("X"),12}");
+            //Console.WriteLine($"SUCCESS: Pointer {procName} for delegate {typeof(T).Name} is {pointer.ToString("X")}");
             return Marshal.GetDelegateForFunctionPointer<T>(pointer);
         }
 
