@@ -95,7 +95,8 @@ namespace openGlTest
                     "  frag_colour = vec4(0.5, 0.0, 0.5, 1.0);" +
                     "}";
 
-                int fs = Gl.CreateShader(0x8B30);
+                const int GL_FRAGMENT_SHADER = 0x8B30;
+                int fs = Gl.CreateShader(GL_FRAGMENT_SHADER);
                 Gl.ShaderSource(fs, fragment_shader);
                 Gl.CompileShader(fs);
                 int fsCompiledSuccessfully = Gl.GetShader(vs, GL_COMPILE_STATUS);
