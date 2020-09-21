@@ -19,7 +19,12 @@ namespace openGlTest
                 Console.WriteLine("Glfw has failed to successfully initialize");
                 return -1;
             }
-            Glfw.WindowHint(0x00022007, 1);
+            {
+                const int GLFW_CONTEXT_VERSION_MAJOR = 0x00022002;
+                Glfw.WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+                const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
+                Glfw.WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+            }
             IntPtr window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
@@ -65,18 +70,24 @@ namespace openGlTest
                 const int GL_FLOAT = 0x1406;
                 Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, IntPtr.Zero);
                 const string vertex_shader =
-"#version 140\n" +
-"in vec3 vp;\n" +
-"void main() {\n" +
-"  gl_Position = vec4(vp, 1.0);\n" +
-"}\n";
-                Console.Write(vertex_shader);
-                Console.WriteLine();
-                int vs = Gl.CreateShader(0x8B31);
+                    "#version 140\n" +
+                    "in vec3 vp;\n" +
+                    "void main() {\n" +
+                    "  gl_Position = vec4(vp, 1.0);\n" +
+                    "}\n";
+                const int GL_VERTEX_SHADER = 0x8B31;
+                int vs = Gl.CreateShader(GL_VERTEX_SHADER);
+                Console.WriteLine("Vertex shader assigned " + vs);
                 Gl.ShaderSource(vs, vertex_shader);
                 Gl.CompileShader(vs);
-                Console.WriteLine($"Status: {Gl.GetShader(vs, 0x8B4F)}");
-                // Console.Write(Gl.GetShaderInfoLog(vs));
+                // 0x8B4F
+                const int GL_COMPILE_STATUS = 0x8B81;
+                int vsCompiledSuccessfully = Gl.GetShader(vs, GL_COMPILE_STATUS);
+                Console.WriteLine($"Status: {vsCompiledSuccessfully == 1}");
+                if (vsCompiledSuccessfully != 1)
+                {
+                    Console.Write(Gl.GetShaderInfoLog(vs));
+                }
             }
 
             while (!Glfw.WindowShouldClose(window))
@@ -92,11 +103,11 @@ namespace openGlTest
         }
         public static void GlfwErrorCallback(int errorCode, string description)
         {
-            Console.WriteLine($"ERROR:{errorCode} : {description}");
+            Console.WriteLine($"GLFW ERROR:{errorCode} : {description}");
         }
         public static void GlErrorCallback(int source, int type, int id, int severity, int length, string message, IntPtr userParam)
         {
-            Console.WriteLine(message);
+            Console.WriteLine("GL ERROR: " + message);
         }
         public static void KeyCallback(IntPtr window, int key, int scancode, int action, int modifiers)
         {

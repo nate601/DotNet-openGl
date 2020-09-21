@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -22,7 +23,7 @@ namespace GlBindings
             _CreateShader = GetGlMethod<glCreateShader>();
             _ShaderSource = GetGlMethod<glShaderSource>();
             _CompileShader = GetGlMethod<glCompileShader>();
-            _GetShader = GetGlMethod<glGetShader>();
+            _GetShader = GetGlMethod<glGetShaderiv>();
             _GetShaderInfoLog = GetGlMethod<glGetShaderInfoLog>();
             _DebugMessageCallback = GetGlMethod<glDebugMessageCallback>();
         }
@@ -63,7 +64,7 @@ namespace GlBindings
         private static glCreateShader _CreateShader;
         private static glShaderSource _ShaderSource;
         private static glCompileShader _CompileShader;
-        private static glGetShader _GetShader;
+        private static glGetShaderiv _GetShader;
         private static glGetShaderInfoLog _GetShaderInfoLog;
         private static glDebugMessageCallback _DebugMessageCallback;
         #endregion
@@ -94,14 +95,14 @@ namespace GlBindings
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate int glCreateShader(int shaderType);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glShaderSource(int shader, int count, string[] content, IntPtr lengths);
+        private delegate void glShaderSource(int shader, int count, string[] content, int[] lengths);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glCompileShader(int shader);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glGetShader(int shader, int parameterName, out int results);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGetShaderiv(int shader, int parameterName, out int results);
         //private delegate void glGetShaderInfoLog(int shaderIndex, int maxLength, ref int size, [MarshalAs(UnmanagedType.LPStr)] ref StringBuilder infoLog);
-        private delegate void glGetShaderInfoLog(int shaderIndex, int maxLength, ref int size,out string infoLog);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGetShaderInfoLog(int shaderIndex, int maxLength, ref int size, StringBuilder infoLog);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate void GlErrorCallbackDelegate(int source, int type, int id, int severeity, int length, string message, IntPtr userParams);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -164,11 +165,11 @@ namespace GlBindings
         }
         public static void ShaderSource(int shaderIndex, string[] contents)
         {
-            _ShaderSource(shaderIndex, contents.Length, contents, lengths: default);
+            _ShaderSource(shaderIndex, contents.Length, contents, contents.Select(x => x.Length).ToArray());
         }
         public static void ShaderSource(int shaderIndex, string content)
         {
-            _ShaderSource(shaderIndex, 1, new string[] { content }, default);
+            ShaderSource(shaderIndex, new string[] { content });
         }
         public static void CompileShader(int shaderIndex)
         {
@@ -183,10 +184,9 @@ namespace GlBindings
 
         public static string GetShaderInfoLog(int shaderIndex)
         {
-//            StringBuilder result = new StringBuilder(255);
-            int size = -1;
-            _GetShaderInfoLog(shaderIndex, 128, ref size, out string result);
-            Console.WriteLine(size);
+            StringBuilder result = new StringBuilder(128);
+            int size = 128;
+            _GetShaderInfoLog(shaderIndex, 128, ref size, result);
             return result.ToString();
         }
         public static void DebugMessageCallback(IntPtr callback)
