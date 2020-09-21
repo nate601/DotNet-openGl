@@ -131,6 +131,7 @@ namespace GlBindings
         #endregion
 
 
+
         #region ExternalFunctions
         public static string GetGlString(int gl_reference)
         {

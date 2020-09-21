@@ -46,6 +46,8 @@ namespace openGlTest
 
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
+            int vaoIndex = -1;
+            int shaderProgram = -1;
             {
                 const int GL_DEPTH_TEST = 0x0B71;
                 const int GL_LESS = 0x0201;
@@ -62,7 +64,7 @@ namespace openGlTest
                 Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
                 Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), ref points, GL_STATIC_DRAW);
 
-                int vaoIndex = Gl.GenVertexArrays();
+                vaoIndex = Gl.GenVertexArrays();
                 Console.WriteLine($"Vertex array assigned {vaoIndex}");
                 Gl.BindVertexArray(vaoIndex);
                 Gl.EnableVertexAttribArray(0);
@@ -105,7 +107,7 @@ namespace openGlTest
                 {
                     Console.Write(Gl.GetShaderInfoLog(vs));
                 }
-                int shaderProgram = Gl.CreateProgram();
+                shaderProgram = Gl.CreateProgram();
                 Gl.AttachShader(shaderProgram, vs);
                 Gl.AttachShader(shaderProgram, fs);
                 Gl.LinkProgram(shaderProgram);
@@ -116,8 +118,11 @@ namespace openGlTest
                 double time = Glfw.GetTime();
 
                 Gl.Clear(0x00004000 | 0x00000100);
-                Glfw.SwapBuffers(window);
+                Gl.UseProgram(shaderProgram);
+                Gl.BindVertexArray(vaoIndex);
+                Gl.DrawArrays(0x0004, 0, 3);
                 Glfw.PollEvents();
+                Glfw.SwapBuffers(window);
             }
 
             Glfw.Terminate();
