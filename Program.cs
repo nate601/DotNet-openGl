@@ -88,6 +88,26 @@ namespace openGlTest
                 {
                     Console.Write(Gl.GetShaderInfoLog(vs));
                 }
+                const string fragment_shader =
+                    "#version 140\n" +
+                    "out vec4 frag_colour;" +
+                    "void main() {" +
+                    "  frag_colour = vec4(0.5, 0.0, 0.5, 1.0);" +
+                    "}";
+
+                int fs = Gl.CreateShader(0x8B30);
+                Gl.ShaderSource(fs, fragment_shader);
+                Gl.CompileShader(fs);
+                int fsCompiledSuccessfully = Gl.GetShader(vs, GL_COMPILE_STATUS);
+                Console.WriteLine($"Status: {fsCompiledSuccessfully == 1}");
+                if (fsCompiledSuccessfully != 1)
+                {
+                    Console.Write(Gl.GetShaderInfoLog(vs));
+                }
+                int shaderProgram = Gl.CreateProgram();
+                Gl.AttachShader(shaderProgram, vs);
+                Gl.AttachShader(shaderProgram, fs);
+                Gl.LinkProgram(shaderProgram);
             }
 
             while (!Glfw.WindowShouldClose(window))

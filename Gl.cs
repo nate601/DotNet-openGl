@@ -26,6 +26,9 @@ namespace GlBindings
             _GetShader = GetGlMethod<glGetShaderiv>();
             _GetShaderInfoLog = GetGlMethod<glGetShaderInfoLog>();
             _DebugMessageCallback = GetGlMethod<glDebugMessageCallback>();
+            _CreateProgram = GetGlMethod<glCreateProgram>();
+            _AttachShader = GetGlMethod<glAttachShader>();
+            _LinkProgram = GetGlMethod<glLinkProgram>();
         }
 
         private static T GetGlMethod<T>()
@@ -67,6 +70,9 @@ namespace GlBindings
         private static glGetShaderiv _GetShader;
         private static glGetShaderInfoLog _GetShaderInfoLog;
         private static glDebugMessageCallback _DebugMessageCallback;
+        private static glCreateProgram _CreateProgram;
+        private static glAttachShader _AttachShader;
+        private static glLinkProgram _LinkProgram;
         #endregion
 
         #region Delegates
@@ -107,6 +113,12 @@ namespace GlBindings
         public delegate void GlErrorCallbackDelegate(int source, int type, int id, int severeity, int length, string message, IntPtr userParams);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDebugMessageCallback(IntPtr callback, IntPtr userParam);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate int glCreateProgram();
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glAttachShader(int program, int shader);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glLinkProgram(int program);
         #endregion
 
 
@@ -192,6 +204,18 @@ namespace GlBindings
         public static void DebugMessageCallback(IntPtr callback)
         {
             _DebugMessageCallback(callback, default);
+        }
+        public static int CreateProgram()
+        {
+            return _CreateProgram();
+        }
+        public static void AttachShader(int program, int shader)
+        {
+            _AttachShader(program, shader);
+        }
+        public static void LinkProgram(int program)
+        {
+            _LinkProgram(program);
         }
         #endregion
     }
