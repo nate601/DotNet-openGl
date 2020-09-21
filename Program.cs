@@ -20,8 +20,6 @@ namespace openGlTest
                 return -1;
             }
             {
-                const int GLFW_CONTEXT_VERSION_MAJOR = 0x00022002;
-                Glfw.WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
                 const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
                 Glfw.WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
             }
@@ -46,14 +44,14 @@ namespace openGlTest
 
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
-            int vaoIndex = -1;
-            int shaderProgram = -1;
+            uint vaoIndex = 255;
+            uint shaderProgram = 255;
             {
-                const int GL_DEPTH_TEST = 0x0B71;
-                const int GL_LESS = 0x0201;
-                Gl.Enable(GL_DEPTH_TEST);
-                Gl.DepthFunction(GL_LESS);
-                int bufferIndex = Gl.GenBuffers(1);
+                //const int GL_DEPTH_TEST = 0x0B71;
+                //const int GL_LESS = 0x0201;
+                //Gl.Enable(GL_DEPTH_TEST);
+                //Gl.DepthFunction(GL_LESS);
+                uint bufferIndex = Gl.GenBuffers(1);
                 Console.WriteLine($"Buffer assigned {bufferIndex}");
                 const int GL_ARRAY_BUFFER = 0x8892;
                 const int GL_STATIC_DRAW = 0x88E4;
@@ -70,7 +68,7 @@ namespace openGlTest
                 Gl.EnableVertexAttribArray(0);
                 Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
                 const int GL_FLOAT = 0x1406;
-                Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, IntPtr.Zero);
+                Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, default);
                 const string vertex_shader =
                     "#version 140\n" +
                     "in vec3 vp;\n" +
@@ -78,7 +76,7 @@ namespace openGlTest
                     "  gl_Position = vec4(vp, 1.0);\n" +
                     "}\n";
                 const int GL_VERTEX_SHADER = 0x8B31;
-                int vs = Gl.CreateShader(GL_VERTEX_SHADER);
+                uint vs = Gl.CreateShader(GL_VERTEX_SHADER);
                 Console.WriteLine("Vertex shader assigned " + vs);
                 Gl.ShaderSource(vs, vertex_shader);
                 Gl.CompileShader(vs);
@@ -98,7 +96,7 @@ namespace openGlTest
                     "}";
 
                 const int GL_FRAGMENT_SHADER = 0x8B30;
-                int fs = Gl.CreateShader(GL_FRAGMENT_SHADER);
+                uint fs = Gl.CreateShader(GL_FRAGMENT_SHADER);
                 Gl.ShaderSource(fs, fragment_shader);
                 Gl.CompileShader(fs);
                 int fsCompiledSuccessfully = Gl.GetShader(vs, GL_COMPILE_STATUS);
@@ -107,22 +105,26 @@ namespace openGlTest
                 {
                     Console.Write(Gl.GetShaderInfoLog(vs));
                 }
+
                 shaderProgram = Gl.CreateProgram();
+                //Console.WriteLine(shaderProgram);
                 Gl.AttachShader(shaderProgram, vs);
                 Gl.AttachShader(shaderProgram, fs);
                 Gl.LinkProgram(shaderProgram);
+                Console.WriteLine($"Linking Status: {Gl.GetProgram(shaderProgram, 0x8B82)}");
             }
 
             while (!Glfw.WindowShouldClose(window))
             {
                 double time = Glfw.GetTime();
 
-                Gl.Clear(0x00004000 | 0x00000100);
+                Gl.ClearColor(0.0f, 0.6f, 0.0f, 1.0f);
+                Gl.Clear(0x00004000 /*| 0x00000100*/);
                 Gl.UseProgram(shaderProgram);
                 Gl.BindVertexArray(vaoIndex);
                 Gl.DrawArrays(0x0004, 0, 3);
-                Glfw.PollEvents();
                 Glfw.SwapBuffers(window);
+                Glfw.PollEvents();
             }
 
             Glfw.Terminate();

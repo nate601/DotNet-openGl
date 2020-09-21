@@ -31,6 +31,8 @@ namespace GlBindings
             _LinkProgram = GetGlMethod<glLinkProgram>();
             _Clear = GetGlMethod<glClear>();
             _UseProgram = GetGlMethod<glUseProgram>();
+            _GetProgram = GetGlMethod<glGetProgramiv>();
+            _ClearColor = GetGlMethod<glClearColor>();
         }
 
         private static T GetGlMethod<T>()
@@ -78,6 +80,8 @@ namespace GlBindings
         private static glLinkProgram _LinkProgram;
         private static glClear _Clear;
         private static glUseProgram _UseProgram;
+        private static glGetProgramiv _GetProgram;
+        private static glClearColor _ClearColor;
         #endregion
 
         #region Delegates
@@ -90,44 +94,47 @@ namespace GlBindings
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDepthFunc(int depthFunctionMethod);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glGenBuffers(int size, ref int buffers);
+        private delegate void glGenBuffers(int size, ref uint buffers);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glBindBuffer(int type, int bufferIndex);
+        private delegate void glBindBuffer(int type, uint bufferIndex);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBufferData(int type, int size, ref float[] data, int usage);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glGenVertexArrays(int size, ref int arrays);
+        private delegate void glGenVertexArrays(int size, ref uint arrays);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glBindVertexArray(int array);
+        private delegate void glBindVertexArray(uint array);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glEnableVertexAttribArray(int index);
+        private delegate void glEnableVertexAttribArray(uint index);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glVertexAttribPointer(int index, int size, int type, bool normalized, int stride, IntPtr pointer);
+        private delegate void glVertexAttribPointer(uint index, int size, int type, bool normalized, int stride, IntPtr pointer);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate int glCreateShader(int shaderType);
+        private delegate uint glCreateShader(int shaderType);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glShaderSource(int shader, int count, string[] content, int[] lengths);
+        private delegate void glShaderSource(uint shader, int count, string[] content, int[] lengths);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glCompileShader(int shader);
+        private delegate void glCompileShader(uint shader);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glGetShaderiv(int shader, int parameterName, out int results);
-        //private delegate void glGetShaderInfoLog(int shaderIndex, int maxLength, ref int size, [MarshalAs(UnmanagedType.LPStr)] ref StringBuilder infoLog);
+        private delegate void glGetShaderiv(uint shader, int parameterName, out int results);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glGetShaderInfoLog(int shaderIndex, int maxLength, ref int size, StringBuilder infoLog);
+        private delegate void glGetShaderInfoLog(uint shaderIndex, int maxLength, ref int size, StringBuilder infoLog);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate void GlErrorCallbackDelegate(int source, int type, int id, int severeity, int length, string message, IntPtr userParams);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDebugMessageCallback(IntPtr callback, IntPtr userParam);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate int glCreateProgram();
+        private delegate uint glCreateProgram();
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glAttachShader(int program, int shader);
+        private delegate void glAttachShader(uint program, uint shader);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glLinkProgram(int program);
+        private delegate void glLinkProgram(uint program);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glClear(int bitField);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glUseProgram(int program);
+        private delegate void glUseProgram(uint program);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGetProgramiv(uint program, int pnmae, out int result);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glClearColor(float red, float green, float blue, float alpha);
         #endregion
 
 
@@ -149,13 +156,14 @@ namespace GlBindings
         {
             _DepthFunction(depthFunctionMethod);
         }
-        public static int GenBuffers(int size = 1)
+        public static uint GenBuffers(int size = 1)
         {
-            int buffers = -1;
+            uint buffers = 0;
             _GenBuffers(size, ref buffers);
+            Console.WriteLine(buffers);
             return buffers;
         }
-        public static void BindBuffer(int type, int bufferIndex)
+        public static void BindBuffer(int type, uint bufferIndex)
         {
             _BindBuffer(type, bufferIndex);
         }
@@ -163,48 +171,48 @@ namespace GlBindings
         {
             _BufferData(type, size, ref data, usage);
         }
-        public static int GenVertexArrays(int size = 1)
+        public static uint GenVertexArrays(int size = 1)
         {
-            int array = -1;
+            uint array = 255;
             _GenVertexArrays(size, ref array);
             return array;
         }
-        public static void BindVertexArray(int array)
+        public static void BindVertexArray(uint array)
         {
             _BindVertexArray(array);
         }
-        public static void EnableVertexAttribArray(int index)
+        public static void EnableVertexAttribArray(uint index)
         {
             _EnableVertexAttribArray(index);
         }
-        public static void VertexAttribPointer(int index, int size, int type, bool normalized, int stride, IntPtr pointer)
+        public static void VertexAttribPointer(uint index, int size, int type, bool normalized, int stride, IntPtr pointer)
         {
             _VertexAttribPointer(index, size, type, normalized, stride, pointer);
         }
-        public static int CreateShader(int shaderType)
+        public static uint CreateShader(int shaderType)
         {
             return _CreateShader(shaderType);
         }
-        public static void ShaderSource(int shaderIndex, string[] contents)
+        public static void ShaderSource(uint shaderIndex, string[] contents)
         {
             _ShaderSource(shaderIndex, contents.Length, contents, contents.Select(x => x.Length).ToArray());
         }
-        public static void ShaderSource(int shaderIndex, string content)
+        public static void ShaderSource(uint shaderIndex, string content)
         {
             ShaderSource(shaderIndex, new string[] { content });
         }
-        public static void CompileShader(int shaderIndex)
+        public static void CompileShader(uint shaderIndex)
         {
             _CompileShader(shaderIndex);
         }
-        public static int GetShader(int shaderIndex, int param)
+        public static int GetShader(uint shaderIndex, int param)
         {
             //int result = -1;
             _GetShader(shaderIndex, param, out int result);
             return result;
         }
 
-        public static string GetShaderInfoLog(int shaderIndex)
+        public static string GetShaderInfoLog(uint shaderIndex)
         {
             StringBuilder result = new StringBuilder(128);
             int size = 128;
@@ -215,15 +223,15 @@ namespace GlBindings
         {
             _DebugMessageCallback(callback, default);
         }
-        public static int CreateProgram()
+        public static uint CreateProgram()
         {
             return _CreateProgram();
         }
-        public static void AttachShader(int program, int shader)
+        public static void AttachShader(uint program, uint shader)
         {
             _AttachShader(program, shader);
         }
-        public static void LinkProgram(int program)
+        public static void LinkProgram(uint program)
         {
             _LinkProgram(program);
         }
@@ -231,9 +239,18 @@ namespace GlBindings
         {
             _Clear(bitField);
         }
-        public static void UseProgram(int program)
+        public static void UseProgram(uint program)
         {
             _UseProgram(program);
+        }
+        public static int GetProgram(uint program, int param)
+        {
+            _GetProgram(program, param, out int val);
+            return val;
+        }
+        public static void ClearColor(float red, float green, float blue, float alpha)
+        {
+            _ClearColor(red, green, blue, alpha);
         }
         #endregion
     }
