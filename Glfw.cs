@@ -3,11 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace GlBindings
 {
-    internal static class Glew
-    {
-        [DllImport("glew", EntryPoint = "glewInit")]
-        public static extern int GlewInit();
-    }
     internal static class Glfw
     {
         #region Delegates

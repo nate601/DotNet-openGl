@@ -34,7 +34,6 @@ namespace openGlTest
             Gl.Enable(0x92E0);
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
             Gl.DebugMessageCallback(Marshal.GetFunctionPointerForDelegate(glErrorCallbackDelegate));
-            int glewErr = Glew.GlewInit();
 
             Console.WriteLine(glewErr);
             {
