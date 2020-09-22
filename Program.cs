@@ -35,7 +35,6 @@ namespace openGlTest
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
             Gl.DebugMessageCallback(Marshal.GetFunctionPointerForDelegate(glErrorCallbackDelegate));
 
-            Console.WriteLine(glewErr);
             {
                 const int GL_VENDOR = 0x1F00;
                 Console.WriteLine($"OpenGL reports the vendor responsible for this implementation as: {Gl.GetGlString(GL_VENDOR)}");
