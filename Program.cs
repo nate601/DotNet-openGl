@@ -117,7 +117,7 @@ namespace openGlTest
                 double time = Glfw.GetTime();
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
-                Gl.Clear(0x00004000 /*| 0x00000100*/);
+                Gl.Clear(0b100000000000000 | 0b100000000);
                 Gl.UseProgram(shaderProgram);
                 Gl.BindVertexArray(vaoIndex);
                 Gl.DrawArrays(0x0004, 0, 3);
