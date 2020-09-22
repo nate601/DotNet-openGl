@@ -98,7 +98,7 @@ namespace GlBindings
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBindBuffer(int type, uint bufferIndex);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glBufferData(int type, int size, ref float[] data, int usage);
+        private delegate void glBufferData(int type, int size, float[] data, int usage);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenVertexArrays(int size, ref uint arrays);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -167,9 +167,9 @@ namespace GlBindings
         {
             _BindBuffer(type, bufferIndex);
         }
-        public static void BufferData(int type, int size, ref float[] data, int usage)
+        public static void BufferData(int type, int size, float[] data, int usage)
         {
-            _BufferData(type, size, ref data, usage);
+            _BufferData(type, size, data, usage);
         }
         public static uint GenVertexArrays(int size = 1)
         {

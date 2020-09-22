@@ -58,7 +58,7 @@ namespace openGlTest
                                  -0.5f, -0.5f,  0.0f
                                  };
                 Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
-                Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), ref points, GL_STATIC_DRAW);
+                Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(),points, GL_STATIC_DRAW);
 
                 vaoIndex = Gl.GenVertexArrays();
                 Console.WriteLine($"Vertex array assigned {vaoIndex}");
