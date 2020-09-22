@@ -116,7 +116,7 @@ namespace GlBindings
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetShaderiv(uint shader, int parameterName, out int results);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glGetShaderInfoLog(uint shaderIndex, int maxLength, ref int size, StringBuilder infoLog);
+        private delegate void glGetShaderInfoLog(uint shaderIndex, int maxLength, out int size, StringBuilder infoLog);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate void GlErrorCallbackDelegate(int source, int type, int id, int severeity, int length, string message, IntPtr userParams);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -215,8 +215,7 @@ namespace GlBindings
         public static string GetShaderInfoLog(uint shaderIndex)
         {
             StringBuilder result = new StringBuilder(128);
-            int size = 128;
-            _GetShaderInfoLog(shaderIndex, 128, ref size, result);
+            _GetShaderInfoLog(shaderIndex, 128, out int size, result);
             return result.ToString();
         }
         public static void DebugMessageCallback(IntPtr callback)
