@@ -46,7 +46,6 @@ namespace openGlTest
             uint shaderProgram = 255;
             {
                 uint bufferIndex = Gl.GenBuffers(1);
-                Console.WriteLine($"Buffer assigned {bufferIndex}");
                 const int GL_ARRAY_BUFFER = 0x8892;
                 const int GL_STATIC_DRAW = 0x88E4;
                 float[] points = {0.0f,  0.5f,  0.0f,
@@ -57,7 +56,6 @@ namespace openGlTest
                 Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), points, GL_STATIC_DRAW);
 
                 vaoIndex = Gl.GenVertexArrays();
-                Console.WriteLine($"Vertex array assigned {vaoIndex}");
                 Gl.BindVertexArray(vaoIndex);
                 Gl.EnableVertexAttribArray(0);
                 Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
@@ -71,13 +69,11 @@ namespace openGlTest
                     "}\n";
                 const int GL_VERTEX_SHADER = 0x8B31;
                 uint vs = Gl.CreateShader(GL_VERTEX_SHADER);
-                Console.WriteLine("Vertex shader assigned " + vs);
                 Gl.ShaderSource(vs, vertex_shader);
                 Gl.CompileShader(vs);
                 // 0x8B4F
                 const int GL_COMPILE_STATUS = 0x8B81;
                 int vsCompiledSuccessfully = Gl.GetShader(vs, GL_COMPILE_STATUS);
-                Console.WriteLine($"Status: {vsCompiledSuccessfully == 1}");
                 if (vsCompiledSuccessfully != 1)
                 {
                     Console.Write(Gl.GetShaderInfoLog(vs));
@@ -94,18 +90,15 @@ namespace openGlTest
                 Gl.ShaderSource(fs, fragment_shader);
                 Gl.CompileShader(fs);
                 int fsCompiledSuccessfully = Gl.GetShader(vs, GL_COMPILE_STATUS);
-                Console.WriteLine($"Status: {fsCompiledSuccessfully == 1}");
                 if (fsCompiledSuccessfully != 1)
                 {
                     Console.Write(Gl.GetShaderInfoLog(vs));
                 }
 
                 shaderProgram = Gl.CreateProgram();
-                //Console.WriteLine(shaderProgram);
                 Gl.AttachShader(shaderProgram, vs);
                 Gl.AttachShader(shaderProgram, fs);
                 Gl.LinkProgram(shaderProgram);
-                Console.WriteLine($"Linking Status: {Gl.GetProgram(shaderProgram, 0x8B82)}");
             }
 
             while (!Glfw.WindowShouldClose(window))
