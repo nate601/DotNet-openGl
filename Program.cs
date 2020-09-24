@@ -73,8 +73,7 @@ namespace openGlTest
                 //Gl.CompileShader(vs);
                 // 0x8B4F
                 const int GL_COMPILE_STATUS = 0x8B81;
-                VertexShader vs = new VertexShader();
-                vs.Init();
+                Shader vs  = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
                 vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
                 vs.Compile();
                 //if (vsCompiledSuccessfully != 1)
