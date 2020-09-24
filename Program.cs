@@ -45,10 +45,6 @@ namespace openGlTest
             uint vaoIndex = 255;
             uint shaderProgram = 255;
             {
-                //const int GL_DEPTH_TEST = 0x0B71;
-                //const int GL_LESS = 0x0201;
-                //Gl.Enable(GL_DEPTH_TEST);
-                //Gl.DepthFunction(GL_LESS);
                 uint bufferIndex = Gl.GenBuffers(1);
                 Console.WriteLine($"Buffer assigned {bufferIndex}");
                 const int GL_ARRAY_BUFFER = 0x8892;
@@ -58,7 +54,7 @@ namespace openGlTest
                                  -0.5f, -0.5f,  0.0f
                                  };
                 Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
-                Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(),points, GL_STATIC_DRAW);
+                Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), points, GL_STATIC_DRAW);
 
                 vaoIndex = Gl.GenVertexArrays();
                 Console.WriteLine($"Vertex array assigned {vaoIndex}");
