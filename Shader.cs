@@ -32,8 +32,7 @@ namespace GlBindings
 
         public override void Compile()
         {
-            throw new System.NotImplementedException();
-
+            Gl.CompileShader(shaderIdentifier);
         }
 
         public override void Init()
