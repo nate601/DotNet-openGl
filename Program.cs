@@ -61,45 +61,17 @@ namespace openGlTest
                 Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
                 const int GL_FLOAT = 0x1406;
                 Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, default);
-                //const string vertex_shader =
-                //    "#version 140\n" +
-                //   "in vec3 vp;\n" +
-                //    "void main() {\n" +
-                //    "  gl_Position = vec4(vp, 1.0);\n" +
-                //    "}\n";
-                //const int GL_VERTEX_SHADER = 0x8B31;
-                //uint vs = Gl.CreateShader(GL_VERTEX_SHADER);
-                //Gl.ShaderSource(vs, vertex_shader);
-                //Gl.CompileShader(vs);
-                // 0x8B4F
-                const int GL_COMPILE_STATUS = 0x8B81;
-                Shader vs  = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
+
+                Shader vs = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
                 vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
                 vs.Compile();
-                //if (vsCompiledSuccessfully != 1)
-                //{
-                //   Console.Write(Gl.GetShaderInfoLog(vs));
-                //}
-                const string fragment_shader =
-                    "#version 140\n" +
-                    "out vec4 frag_colour;" +
-                    "void main() {" +
-                    "  frag_colour = vec4(0.5, 0.0, 0.5, 1.0);" +
-                    "}";
-
-                const int GL_FRAGMENT_SHADER = 0x8B30;
-                uint fs = Gl.CreateShader(GL_FRAGMENT_SHADER);
-                Gl.ShaderSource(fs, fragment_shader);
-                Gl.CompileShader(fs);
-                int fsCompiledSuccessfully = Gl.GetShader(fs, GL_COMPILE_STATUS);
-                if (fsCompiledSuccessfully != 1)
-                {
-                    Console.Write(Gl.GetShaderInfoLog(fs));
-                }
+                Shader fs = new Shader(Shader.ShaderTypes.GL_FRAGMENT_SHADER);
+                fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
+                fs.Compile();
 
                 shaderProgram = Gl.CreateProgram();
                 Gl.AttachShader(shaderProgram, vs.shaderIdentifier);
-                Gl.AttachShader(shaderProgram, fs);
+                Gl.AttachShader(shaderProgram, fs.shaderIdentifier);
                 Gl.LinkProgram(shaderProgram);
             }
 
