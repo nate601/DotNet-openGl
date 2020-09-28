@@ -218,8 +218,12 @@ namespace GlBindings
 
         public static string GetShaderInfoLog(uint shaderIndex)
         {
-            StringBuilder result = new StringBuilder(128);
-            _GetShaderInfoLog(shaderIndex, 128, out int size, result);
+            return GetShaderInfoLog(shaderIndex, 128);
+        }
+        public static string GetShaderInfoLog(uint shaderIndex, int length)
+        {
+            StringBuilder result = new StringBuilder(length);
+            _GetShaderInfoLog(shaderIndex, length, out int _, result);
             return result.ToString();
         }
         public static void DebugMessageCallback(IntPtr callback)
