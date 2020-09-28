@@ -4,9 +4,9 @@ using GlBindings;
 
 namespace openGlTest
 {
-    class Program
+    public class Program
     {
-        static int Main(string[] args)
+        public static int Main()
         {
             Glfw.ErrorFunc errorCallbackDelegate = GlfwErrorCallback;
             _ = Glfw.SetErrorCallback(Marshal.GetFunctionPointerForDelegate(errorCallbackDelegate));
@@ -19,17 +19,7 @@ namespace openGlTest
                 Console.WriteLine("Glfw has failed to successfully initialize");
                 return -1;
             }
-            {
-                const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
-                Glfw.WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
-                const int GLFW_CONTEXT_VERSION_MAJOR = 0x00022002;
-                const int GLFW_CONTEXT_VERSION_MINOR = 0x00022003;
-                const int GLFW_OPENGL_PROFILE = 0x00022008;
-                const int GLFW_OPENGL_CORE_PROFILE = 0x00032001;
-                Glfw.WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-                Glfw.WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-                Glfw.WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-            }
+            SetWindowHints();
             IntPtr window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
@@ -98,6 +88,20 @@ namespace openGlTest
             Glfw.Terminate();
             return 0;
         }
+
+        private static void SetWindowHints()
+        {
+            const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
+            Glfw.WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+            const int GLFW_CONTEXT_VERSION_MAJOR = 0x00022002;
+            const int GLFW_CONTEXT_VERSION_MINOR = 0x00022003;
+            const int GLFW_OPENGL_PROFILE = 0x00022008;
+            const int GLFW_OPENGL_CORE_PROFILE = 0x00032001;
+            Glfw.WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            Glfw.WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+            Glfw.WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        }
+
         public static void GlfwErrorCallback(int errorCode, string description)
         {
             Console.WriteLine($"GLFW ERROR:{errorCode} : {description}");
