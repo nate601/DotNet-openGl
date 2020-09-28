@@ -11,6 +11,7 @@ namespace GlBindings
         public string ShaderSource
         {
             set => Gl.ShaderSource(shaderIdentifier, value);
+            get => Gl.GetShaderSource(shaderIdentifier);
         }
 
         public void Compile()
