@@ -43,7 +43,7 @@ namespace openGlTest
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
             uint vaoIndex = 255;
-            uint shaderProgram = 255;
+            uint shaderProgramIdentifier = 255;
             {
                 uint bufferIndex = Gl.GenBuffers(1);
                 const int GL_ARRAY_BUFFER = 0x8892;
@@ -69,10 +69,11 @@ namespace openGlTest
                 fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
                 fs.Compile();
 
-                shaderProgram = Gl.CreateProgram();
-                Gl.AttachShader(shaderProgram, vs.shaderIdentifier);
-                Gl.AttachShader(shaderProgram, fs.shaderIdentifier);
-                Gl.LinkProgram(shaderProgram);
+                ShaderProgram shaderProgram = new ShaderProgram();
+                shaderProgram.AttachShader(vs);
+                shaderProgram.AttachShader(fs);
+                shaderProgram.Link();
+                shaderProgramIdentifier = shaderProgram.programIdentifier;
             }
 
             while (!Glfw.WindowShouldClose(window))
@@ -81,7 +82,7 @@ namespace openGlTest
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
-                Gl.UseProgram(shaderProgram);
+                Gl.UseProgram(shaderProgramIdentifier);
                 Gl.BindVertexArray(vaoIndex);
                 Gl.DrawArrays(0x0004, 0, 3);
                 Glfw.SwapBuffers(window);
