@@ -38,8 +38,8 @@ namespace GlBindings
 
         public enum ShaderTypes
         {
-            GL_VERTEX_SHADER    = 0x8B31,
-            GL_FRAGMENT_SHADER  = 0x8B30
+            GL_VERTEX_SHADER = 0x8B31,
+            GL_FRAGMENT_SHADER = 0x8B30
         }
     }
 }
