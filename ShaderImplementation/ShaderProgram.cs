@@ -9,6 +9,13 @@ namespace GlBindings
         {
             Gl.AttachShader(programIdentifier, shader.shaderIdentifier);
         }
+        public void AttachShader(params Shader[] shaders)
+        {
+            foreach (Shader shader in shaders)
+            {
+                AttachShader(shader);
+            }
+        }
         public void Link()
         {
             Gl.LinkProgram(programIdentifier);

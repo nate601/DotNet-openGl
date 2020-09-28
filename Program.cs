@@ -67,8 +67,7 @@ namespace openGlTest
             fs.Compile();
 
             ShaderProgram shaderProgram = new ShaderProgram();
-            shaderProgram.AttachShader(vs);
-            shaderProgram.AttachShader(fs);
+            shaderProgram.AttachShader(vs, fs);
             shaderProgram.Link();
 
 
