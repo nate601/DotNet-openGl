@@ -34,6 +34,7 @@ namespace GlBindings
             _GetProgram = GetGlMethod<glGetProgramiv>();
             _ClearColor = GetGlMethod<glClearColor>();
             _GetShaderSource = GetGlMethod<glGetShaderSource>();
+            _SetViewport = GetGlMethod<glViewport>();
         }
 
         private static T GetGlMethod<T>()
@@ -84,6 +85,7 @@ namespace GlBindings
         private static glGetProgramiv _GetProgram;
         private static glClearColor _ClearColor;
         private static glGetShaderSource _GetShaderSource;
+        private static glViewport _SetViewport;
         #endregion
 
         #region Delegates
@@ -139,6 +141,8 @@ namespace GlBindings
         private delegate void glClearColor(float red, float green, float blue, float alpha);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetShaderSource(uint shader, int bufferSize, out int length, StringBuilder source);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glViewport(int x, int y, int width, int height);
         #endregion
 
 
@@ -264,6 +268,10 @@ namespace GlBindings
             StringBuilder result = new StringBuilder(128);
             _GetShaderSource(shader, 128, out int _, result);
             return result.ToString();
+        }
+        public static void SetViewport(int x, int y, int width, int height)
+        {
+            _SetViewport(x, y, width, height);
         }
 
         #endregion
