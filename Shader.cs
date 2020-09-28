@@ -18,7 +18,34 @@ namespace GlBindings
         {
             Gl.CompileShader(shaderIdentifier);
         }
-
+        public bool TryCompile(out string InfoLog)
+        {
+            Gl.CompileShader(shaderIdentifier);
+            InfoLog = HasInfoLog() ? GetInfoLog() : (default);
+            return LastCompileSuccessful;
+        }
+        public bool LastCompileSuccessful
+        {
+            get
+            {
+                const int GL_COMPILE_STATUS = 0x8B81;
+                return Gl.GetShader(shaderIdentifier, GL_COMPILE_STATUS) == 1;
+            }
+        }
+        public string GetInfoLog()
+        {
+            if (!HasInfoLog())
+            {
+                return null;
+            }
+            int length = Gl.GetShader(shaderIdentifier, 0x8B84);
+            string infoLog = Gl.GetShaderInfoLog(shaderIdentifier, length);
+            return infoLog;
+        }
+        private bool HasInfoLog()
+        {
+            return Gl.GetShader(shaderIdentifier, 0x8B84) != 0;
+        }
         public void SetShaderSource(string shaderSource)
         {
             ShaderSource = shaderSource;
