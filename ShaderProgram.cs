@@ -3,6 +3,7 @@ namespace GlBindings
     public class ShaderProgram
     {
         internal uint programIdentifier;
+        public static ShaderProgram ActiveProgram { get; private set; }
 
         public void AttachShader(Shader shader)
         {
@@ -18,6 +19,7 @@ namespace GlBindings
         }
         public void MakeActiveProgram()
         {
+            ActiveProgram = this;
             Gl.UseProgram(programIdentifier);
         }
     }
