@@ -22,6 +22,13 @@ namespace openGlTest
             {
                 const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
                 Glfw.WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
+                const int GLFW_CONTEXT_VERSION_MAJOR = 0x00022002;
+                const int GLFW_CONTEXT_VERSION_MINOR = 0x00022003;
+                const int GLFW_OPENGL_PROFILE = 0x00022008;
+                const int GLFW_OPENGL_CORE_PROFILE = 0x00032001;
+                Glfw.WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+                Glfw.WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+                Glfw.WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             }
             IntPtr window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
