@@ -17,15 +17,18 @@ namespace GlBindings
         {
             Gl.CompileShader(shaderIdentifier);
         }
+
         public void SetShaderSource(string shaderSource)
         {
             ShaderSource = shaderSource;
         }
+
         public void LoadShaderSourceFromFile(string filePath)
         {
             string v = File.ReadAllText(filePath);
             ShaderSource = v;
         }
+
         public Shader(ShaderTypes shaderType)
         {
             ShaderType = shaderType;
