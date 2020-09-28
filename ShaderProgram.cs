@@ -16,5 +16,9 @@ namespace GlBindings
         {
             programIdentifier = Gl.CreateProgram();
         }
+        public void MakeActiveProgram()
+        {
+            Gl.UseProgram(programIdentifier);
+        }
     }
 }

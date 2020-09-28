@@ -43,38 +43,36 @@ namespace openGlTest
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
             uint vaoIndex = 255;
-            uint shaderProgramIdentifier = 255;
-            {
-                uint bufferIndex = Gl.GenBuffers(1);
-                const int GL_ARRAY_BUFFER = 0x8892;
-                const int GL_STATIC_DRAW = 0x88E4;
-                float[] points = {0.0f,  0.5f,  0.0f,
+
+            uint bufferIndex = Gl.GenBuffers(1);
+            const int GL_ARRAY_BUFFER = 0x8892;
+            const int GL_STATIC_DRAW = 0x88E4;
+            float[] points = {    0.0f,  0.5f,  0.0f,
                                   0.5f, -0.5f,  0.0f,
-                                 -0.5f, -0.5f,  0.0f
+                                 -0.5f, -0.5f,  0.0f,
                                  };
-                Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
-                Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), points, GL_STATIC_DRAW);
+            Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
+            Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), points, GL_STATIC_DRAW);
 
-                vaoIndex = Gl.GenVertexArrays();
-                Gl.BindVertexArray(vaoIndex);
-                Gl.EnableVertexAttribArray(0);
-                Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
-                const int GL_FLOAT = 0x1406;
-                Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, default);
+            vaoIndex = Gl.GenVertexArrays();
+            Gl.BindVertexArray(vaoIndex);
+            Gl.EnableVertexAttribArray(0);
+            Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
+            const int GL_FLOAT = 0x1406;
+            Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, default);
 
-                Shader vs = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
-                vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
-                vs.Compile();
-                Shader fs = new Shader(Shader.ShaderTypes.GL_FRAGMENT_SHADER);
-                fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
-                fs.Compile();
+            Shader vs = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
+            vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
+            vs.Compile();
+            Shader fs = new Shader(Shader.ShaderTypes.GL_FRAGMENT_SHADER);
+            fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
+            fs.Compile();
 
-                ShaderProgram shaderProgram = new ShaderProgram();
-                shaderProgram.AttachShader(vs);
-                shaderProgram.AttachShader(fs);
-                shaderProgram.Link();
-                shaderProgramIdentifier = shaderProgram.programIdentifier;
-            }
+            ShaderProgram shaderProgram = new ShaderProgram();
+            shaderProgram.AttachShader(vs);
+            shaderProgram.AttachShader(fs);
+            shaderProgram.Link();
+
 
             while (!Glfw.WindowShouldClose(window))
             {
@@ -82,7 +80,7 @@ namespace openGlTest
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
-                Gl.UseProgram(shaderProgramIdentifier);
+                shaderProgram.MakeActiveProgram();
                 Gl.BindVertexArray(vaoIndex);
                 Gl.DrawArrays(0x0004, 0, 3);
                 Glfw.SwapBuffers(window);
