@@ -40,6 +40,7 @@ namespace openGlTest
             Gl.LoadGl();
             Gl.Enable(0x92E0);
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
+            Gl.SetViewport(0, 0, 640, 480);
             Gl.DebugMessageCallback(Marshal.GetFunctionPointerForDelegate(glErrorCallbackDelegate));
 
             {
