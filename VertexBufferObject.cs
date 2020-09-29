@@ -18,7 +18,7 @@ namespace GlBindings
         }
         public void BufferData(float[] data, DrawType dType)
         {
-            Gl.BufferData((int)bufType, Marshal.SizeOf(data), data, (int)dType);
+            Gl.BufferData((int)bufType, Marshal.SizeOf(typeof(float)) * data.Length, data, (int)dType);
 
         }
     }
