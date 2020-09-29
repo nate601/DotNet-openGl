@@ -43,7 +43,6 @@ namespace openGlTest
             uint vaoIndex = 255;
 
             //uint bufferIndex = Gl.GenBuffers(1);
-            const int GL_ARRAY_BUFFER = 0x8892;
             float[] points = {    0.0f,  0.5f,  0.0f,
                                   0.5f, -0.5f,  0.0f,
                                  -0.5f, -0.5f,  0.0f,
@@ -53,12 +52,12 @@ namespace openGlTest
 
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             vbo.Bind();
-            vbo.BufferData(points,DrawType.GL_STATIC_DRAW);
+            vbo.BufferData(points, DrawType.GL_STATIC_DRAW);
 
             vaoIndex = Gl.GenVertexArrays();
             Gl.BindVertexArray(vaoIndex);
             Gl.EnableVertexAttribArray(0);
-            Gl.BindBuffer(GL_ARRAY_BUFFER, vbo.identifier);
+            vbo.Bind();
             const int GL_FLOAT = 0x1406;
             Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, default);
 
