@@ -42,20 +42,23 @@ namespace openGlTest
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
             uint vaoIndex = 255;
 
-            uint bufferIndex = Gl.GenBuffers(1);
+            //uint bufferIndex = Gl.GenBuffers(1);
             const int GL_ARRAY_BUFFER = 0x8892;
-            const int GL_STATIC_DRAW = 0x88E4;
             float[] points = {    0.0f,  0.5f,  0.0f,
                                   0.5f, -0.5f,  0.0f,
                                  -0.5f, -0.5f,  0.0f,
                                  };
-            Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
-            Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), points, GL_STATIC_DRAW);
+            /* Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex); */
+            /* Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), points, GL_STATIC_DRAW); */
+
+            VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
+            vbo.Bind();
+            vbo.BufferData(points,DrawType.GL_STATIC_DRAW);
 
             vaoIndex = Gl.GenVertexArrays();
             Gl.BindVertexArray(vaoIndex);
             Gl.EnableVertexAttribArray(0);
-            Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex);
+            Gl.BindBuffer(GL_ARRAY_BUFFER, vbo.identifier);
             const int GL_FLOAT = 0x1406;
             Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, default);
 
