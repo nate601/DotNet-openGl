@@ -80,7 +80,7 @@ namespace openGlTest
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
-                shaderProgram.MakeActiveProgram();
+                shaderProgram.Bind();
                 vao.Bind();
                 Gl.DrawArrays(0x0004, 0, 3);
                 Glfw.SwapBuffers(window);
