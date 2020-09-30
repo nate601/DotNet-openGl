@@ -40,26 +40,20 @@ namespace openGlTest
 
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
-            uint vaoIndex = 255;
 
-            //uint bufferIndex = Gl.GenBuffers(1);
             float[] points = {    0.0f,  0.5f,  0.0f,
                                   0.5f, -0.5f,  0.0f,
                                  -0.5f, -0.5f,  0.0f,
                                  };
-            /* Gl.BindBuffer(GL_ARRAY_BUFFER, bufferIndex); */
-            /* Gl.BufferData(GL_ARRAY_BUFFER, 9 * Marshal.SizeOf<float>(), points, GL_STATIC_DRAW); */
 
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             vbo.Bind();
             vbo.BufferData(points, DrawType.GL_STATIC_DRAW);
 
-            vaoIndex = Gl.GenVertexArrays();
-            Gl.BindVertexArray(vaoIndex);
-            Gl.EnableVertexAttribArray(0);
-            vbo.Bind();
-            const int GL_FLOAT = 0x1406;
-            Gl.VertexAttribPointer(0, 3, GL_FLOAT, false, 0, default);
+            VertexArrayObject vao = new VertexArrayObject();
+            vao.Bind();
+            vao.EnableVertexAttribArray(0);
+            vao.VertexAttribPointer(0, 3, DataType.GL_FLOAT, false, 0);
 
             Shader vs = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
             vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
@@ -87,7 +81,7 @@ namespace openGlTest
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
                 shaderProgram.MakeActiveProgram();
-                Gl.BindVertexArray(vaoIndex);
+                vao.Bind();
                 Gl.DrawArrays(0x0004, 0, 3);
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
