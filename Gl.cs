@@ -102,7 +102,7 @@ namespace GlBindings
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBindBuffer(int type, uint bufferIndex);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private delegate void glBufferData(int type, int size, float[] data, int usage);
+        private delegate void glBufferData(int type, int size, IntPtr data, int usage);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenVertexArrays(int size, ref uint arrays);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -175,9 +175,36 @@ namespace GlBindings
         {
             _BindBuffer(type, bufferIndex);
         }
-        public static void BufferData(int type, int size, float[] data, int usage)
+        public static void BufferData<T>(int type, int size, T[] data, int usage) where T : IComparable
         {
-            _BufferData(type, size, data, usage);
+            IntPtr ptr = GetPointerToArray(data, out Action deallocate);
+            BufferData(type, size, ptr, usage);
+            deallocate();
+        }
+        private static IntPtr GetPointerToArray<T>(T[] array, out Action deallocatePtr)
+        {
+
+            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(array[0].GetType()) * array.Length);
+            deallocatePtr = () => Marshal.FreeHGlobal(ptr);
+            if (array is float[] v)
+            {
+                Marshal.Copy(v, 0, ptr, array.Length);
+            }
+            else if (array is int[] i)
+            {
+                Marshal.Copy(i, 0, ptr, array.Length);
+            }
+            else
+            {
+                throw new Exception("Type not handled");
+            }
+            return ptr;
+
+        }
+
+        public static void BufferData(int type, int size, IntPtr pointerToData, int usage)
+        {
+            _BufferData(type, size, pointerToData, usage);
         }
         public static uint GenVertexArrays(int size = 1)
         {
