@@ -2,9 +2,14 @@ namespace GlBindings
 {
     public class VertexArrayObject
     {
-        public uint identifier;
+        private readonly uint identifier;
         public static VertexArrayObject currentlyBound;
         public bool IsCurrentlyBound => currentlyBound == this;
+
+        public static explicit operator uint(VertexArrayObject i)
+        {
+            return i.identifier;
+        }
 
         public VertexArrayObject()
         {

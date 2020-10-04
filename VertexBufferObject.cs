@@ -5,7 +5,11 @@ namespace GlBindings
     public class VertexBufferObject
     {
         private readonly BufferType bufType;
-        public uint identifier;
+        private readonly uint identifier;
+        public static explicit operator uint(VertexBufferObject vbo)
+        {
+            return vbo.identifier;
+        }
 
         public VertexBufferObject(BufferType bufType)
         {

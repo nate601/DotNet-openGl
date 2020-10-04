@@ -46,11 +46,11 @@ namespace openGlTest
                                  -0.5f, -0.5f,  0.0f,
                                  };
             /* float[] vertices = new float[]{ */
-     /* 0.5f,  0.5f, 0.0f,  // top right */
-     /* 0.5f, -0.5f, 0.0f,  // bottom right */
-    /* -0.5f, -0.5f, 0.0f,  // bottom left */
-    /* -0.5f,  0.5f, 0.0f   // top left */ 
-/* }; */
+            /* 0.5f,  0.5f, 0.0f,  // top right */
+            /* 0.5f, -0.5f, 0.0f,  // bottom right */
+            /* -0.5f, -0.5f, 0.0f,  // bottom left */
+            /* -0.5f,  0.5f, 0.0f   // top left */
+            /* }; */
             /* uint[] indices = new uint[]{ */
             /*     0, 1, 3, */
             /*     1, 2, 3 */
@@ -62,7 +62,7 @@ namespace openGlTest
             /* uint ebo = Gl.GenBuffers(0x8893); */
             /* Gl.BindBuffer(0x8893, ebo); */
 
-/*             Gl.BufferData(); */
+            /*             Gl.BufferData(); */
             VertexArrayObject vao = new VertexArrayObject();
             vao.Bind();
             vao.EnableVertexAttribArray(0);
