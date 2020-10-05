@@ -172,7 +172,7 @@ namespace GlBindings
         {
             uint buffers = 0;
             _GenBuffers(size, ref buffers);
-            Console.WriteLine(buffers);
+            //Console.WriteLine(buffers);
             return buffers;
         }
         public static void BindBuffer(int type, uint bufferIndex)
