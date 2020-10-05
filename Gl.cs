@@ -266,6 +266,10 @@ namespace GlBindings
         {
             _DebugMessageCallback(callback, default);
         }
+        public static void DebugMessageCallback<T>(T callback)
+        {
+            DebugMessageCallback(Marshal.GetFunctionPointerForDelegate(callback));
+        }
         public static uint CreateProgram()
         {
             return _CreateProgram();

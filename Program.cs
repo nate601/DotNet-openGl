@@ -31,7 +31,7 @@ namespace openGlTest
             Gl.Enable(0x92E0);
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
             Gl.SetViewport(0, 0, 640, 480);
-            Gl.DebugMessageCallback(Marshal.GetFunctionPointerForDelegate(glErrorCallbackDelegate));
+            Gl.DebugMessageCallback(glErrorCallbackDelegate);
 
             {
                 const int GL_VENDOR = 0x1F00;
