@@ -104,18 +104,28 @@ namespace openGlTest
             return 0;
         }
 
-        private static void SetWindowHints()
+        private static ShaderProgram GenerateShaderProgram()
         {
-            const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
-            const int GLFW_CONTEXT_VERSION_MAJOR = 0x00022002;
-            const int GLFW_CONTEXT_VERSION_MINOR = 0x00022003;
-            const int GLFW_OPENGL_PROFILE = 0x00022008;
-            const int GLFW_OPENGL_CORE_PROFILE = 0x00032001;
-            Glfw.WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-            Glfw.WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, 1);
-            Glfw.WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-            Glfw.WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            Shader vs = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
+            vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
+            if (!vs.TryCompile(out string vsInfolog))
+            {
+                Console.WriteLine($"Compilation failed:\n {vsInfolog}");
+            }
+
+            Shader fs = new Shader(Shader.ShaderTypes.GL_FRAGMENT_SHADER);
+            fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
+            if (!fs.TryCompile(out string fsInfoLog))
+            {
+                Console.WriteLine($"Compilation failed:\n {fsInfoLog}");
+            }
+
+            ShaderProgram shaderProgram = new ShaderProgram();
+            shaderProgram.AttachShader(vs, fs);
+            shaderProgram.Link();
+            return shaderProgram;
         }
+
 
         public static void GlfwErrorCallback(int errorCode, string description)
         {
