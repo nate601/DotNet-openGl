@@ -200,6 +200,7 @@ namespace GlBindings
             }
             else
             {
+                Console.WriteLine("Type not handled");
                 throw new Exception("Type not handled");
             }
             return ptr;
