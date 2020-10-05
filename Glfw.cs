@@ -44,5 +44,17 @@ namespace GlBindings
         [DllImport("glfw", EntryPoint = "glfwWindowHint")]
         public static extern void WindowHint(int target, int hint);
         #endregion
+        public static void DefaultWindowHints(bool debug)
+        {
+            const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
+            const int GLFW_CONTEXT_VERSION_MAJOR = 0x00022002;
+            const int GLFW_CONTEXT_VERSION_MINOR = 0x00022003;
+            const int GLFW_OPENGL_PROFILE = 0x00022008;
+            const int GLFW_OPENGL_CORE_PROFILE = 0x00032001;
+            WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, debug ? 1 : 0);
+            WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+            WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        }
     }
 }

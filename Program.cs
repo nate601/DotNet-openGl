@@ -19,7 +19,7 @@ namespace openGlTest
                 Console.WriteLine("Glfw has failed to successfully initialize");
                 return -1;
             }
-            SetWindowHints();
+            Glfw.DefaultWindowHints(true);
             IntPtr window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
