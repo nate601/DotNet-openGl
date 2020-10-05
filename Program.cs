@@ -41,10 +41,10 @@ namespace openGlTest
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
 
-/*             float[] points = {    0.0f,  0.5f,  0.0f, */
-/*                                   0.5f, -0.5f,  0.0f, */
-/*                                  -0.5f, -0.5f,  0.0f, */
-/*                                  }; */
+            /*             float[] points = {    0.0f,  0.5f,  0.0f, */
+            /*                                   0.5f, -0.5f,  0.0f, */
+            /*                                  -0.5f, -0.5f,  0.0f, */
+            /*                                  }; */
             float[] vertices = new float[]{
             0.5f,  0.5f, 0.0f,  // top right
             0.5f, -0.5f, 0.0f,  // bottom right
@@ -58,15 +58,15 @@ namespace openGlTest
 
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             VertexArrayObject vao = new VertexArrayObject();
-            uint ebo = Gl.GenBuffers();
+            ElementBufferObject ebo = new ElementBufferObject();
 
             vao.Bind();
 
             vbo.Bind();
             vbo.BufferData(vertices, DrawType.GL_STATIC_DRAW);
 
-            Gl.BindBuffer(0x8893, ebo);
-            Gl.BufferData(0x8893, indices.Length * Marshal.SizeOf(new int()), indices, (int)DrawType.GL_STATIC_DRAW);
+            ebo.Bind();
+            ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
 
             vao.VertexAttribPointer(0, 3, DataType.GL_FLOAT, false, 0);
 
