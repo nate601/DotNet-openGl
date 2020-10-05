@@ -35,6 +35,7 @@ namespace GlBindings
             _ClearColor = GetGlMethod<glClearColor>();
             _GetShaderSource = GetGlMethod<glGetShaderSource>();
             _SetViewport = GetGlMethod<glViewport>();
+            _DrawElements = GetGlMethod<glDrawElements>();
         }
 
         private static T GetGlMethod<T>()
@@ -86,6 +87,7 @@ namespace GlBindings
         private static glClearColor _ClearColor;
         private static glGetShaderSource _GetShaderSource;
         private static glViewport _SetViewport;
+        private static glDrawElements _DrawElements;
         #endregion
 
         #region Delegates
@@ -143,6 +145,8 @@ namespace GlBindings
         private delegate void glGetShaderSource(uint shader, int bufferSize, out int length, StringBuilder source);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glViewport(int x, int y, int width, int height);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glDrawElements(int mode, int count, int type, int indices);
         #endregion
 
 
@@ -299,6 +303,10 @@ namespace GlBindings
         public static void SetViewport(int x, int y, int width, int height)
         {
             _SetViewport(x, y, width, height);
+        }
+        public static void DrawElements(int mode, int size, int type, int indices)
+        {
+            _DrawElements(mode, size, type, indices);
         }
 
         #endregion
