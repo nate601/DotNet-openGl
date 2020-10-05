@@ -41,51 +41,38 @@ namespace openGlTest
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
 
-            float[] points = {    0.0f,  0.5f,  0.0f,
-                                  0.5f, -0.5f,  0.0f,
-                                 -0.5f, -0.5f,  0.0f,
-                                 };
-            /* float[] vertices = new float[]{ */
-            /* 0.5f,  0.5f, 0.0f,  // top right */
-            /* 0.5f, -0.5f, 0.0f,  // bottom right */
-            /* -0.5f, -0.5f, 0.0f,  // bottom left */
-            /* -0.5f,  0.5f, 0.0f   // top left */
-            /* }; */
-            /* uint[] indices = new uint[]{ */
-            /*     0, 1, 3, */
-            /*     1, 2, 3 */
-            /* } */
+/*             float[] points = {    0.0f,  0.5f,  0.0f, */
+/*                                   0.5f, -0.5f,  0.0f, */
+/*                                  -0.5f, -0.5f,  0.0f, */
+/*                                  }; */
+            float[] vertices = new float[]{
+            0.5f,  0.5f, 0.0f,  // top right
+            0.5f, -0.5f, 0.0f,  // bottom right
+            -0.5f, -0.5f, 0.0f,  // bottom left
+            -0.5f,  0.5f, 0.0f   // top left
+            };
+            int[] indices = new int[]{
+                0, 1, 3,
+                1, 2, 3
+            };
 
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
-            vbo.Bind();
-            vbo.BufferData(points, DrawType.GL_STATIC_DRAW);
-            /* uint ebo = Gl.GenBuffers(0x8893); */
-            /* Gl.BindBuffer(0x8893, ebo); */
-
-            /*             Gl.BufferData(); */
             VertexArrayObject vao = new VertexArrayObject();
+            uint ebo = Gl.GenBuffers();
+
             vao.Bind();
-            vao.EnableVertexAttribArray(0);
+
+            vbo.Bind();
+            vbo.BufferData(vertices, DrawType.GL_STATIC_DRAW);
+
+            Gl.BindBuffer(0x8893, ebo);
+            Gl.BufferData(0x8893, indices.Length * Marshal.SizeOf(new int()), indices, (int)DrawType.GL_STATIC_DRAW);
+
             vao.VertexAttribPointer(0, 3, DataType.GL_FLOAT, false, 0);
 
-            Shader vs = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
-            vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
-            if (!vs.TryCompile(out string vsInfolog))
-            {
-                Console.WriteLine($"Compilation failed:\n {vsInfolog}");
-            }
+            vao.EnableVertexAttribArray(0);
 
-            Shader fs = new Shader(Shader.ShaderTypes.GL_FRAGMENT_SHADER);
-            fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
-            if (!fs.TryCompile(out string fsInfoLog))
-            {
-                Console.WriteLine($"Compilation failed:\n {fsInfoLog}");
-            }
-
-            ShaderProgram shaderProgram = new ShaderProgram();
-            shaderProgram.AttachShader(vs, fs);
-            shaderProgram.Link();
-
+            ShaderProgram shaderProgram = GenerateShaderProgram();
 
             while (!Glfw.WindowShouldClose(window))
             {
@@ -95,7 +82,8 @@ namespace openGlTest
                 Gl.Clear(0b100000000000000 | 0b100000000);
                 shaderProgram.Bind();
                 vao.Bind();
-                Gl.DrawArrays(0x0004, 0, 3);
+                Gl.DrawElements(0x0004, 6, 0x1405, 0);
+                /* Gl.DrawArrays(0x0004, 0, 3); */
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
             }
