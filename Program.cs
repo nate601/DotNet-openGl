@@ -68,9 +68,6 @@ namespace openGlTest
             ebo.Bind();
             ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
 
-            /* vao.VertexAttribPointer(0, 3, DataType.GL_FLOAT, false, 0); */
-
-            /* vao.EnableVertexAttribArray(0); */
             _ = vao.AddAttribute(3, DataType.GL_FLOAT, false, 0);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
