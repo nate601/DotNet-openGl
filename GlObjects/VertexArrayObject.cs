@@ -5,6 +5,7 @@ namespace GlBindings
         private readonly uint identifier;
         public static VertexArrayObject currentlyBound;
         public bool IsCurrentlyBound => currentlyBound == this;
+        private uint currentAttributeCount = 0;
 
         public static explicit operator uint(VertexArrayObject i)
         {
@@ -26,11 +27,17 @@ namespace GlBindings
         }
         public void VertexAttribPointer(uint index, int size, DataType type, bool normalized, int stride)
         {
-            if (!IsCurrentlyBound)
-            {
-                Bind();
-            }
+            Bind();
             Gl.VertexAttribPointer(index, size, (int)type, normalized, stride, default);
+        }
+        public uint AddAttribute(int size, DataType type, bool normalized, int stride)
+        {
+            Bind();
+            VertexAttribPointer(currentAttributeCount, size, type, normalized, stride);
+            EnableVertexAttribArray(currentAttributeCount);
+            currentAttributeCount++;
+            return currentAttributeCount - 1;
+
         }
 
     }
