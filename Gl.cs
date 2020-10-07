@@ -37,6 +37,9 @@ namespace GlBindings
             _SetViewport = GetGlMethod<glViewport>();
             _DrawElements = GetGlMethod<glDrawElements>();
             _GetAttribLocation = GetGlMethod<glGetAttribLocation>();
+            _GetUniformLocation = GetGlMethod<glGetUniformLocation>();
+            _SetUniformFloat = GetGlMethod<glUniform1f>();
+            _SetUniformInt = GetGlMethod<glUniform1i>();
         }
 
         private static T GetGlMethod<T>()
@@ -90,6 +93,9 @@ namespace GlBindings
         private static glViewport _SetViewport;
         private static glDrawElements _DrawElements;
         private static glGetAttribLocation _GetAttribLocation;
+        private static glGetUniformLocation _GetUniformLocation;
+        private static glUniform1f _SetUniformFloat;
+        private static glUniform1i _SetUniformInt;
         #endregion
 
         #region Delegates
@@ -151,6 +157,12 @@ namespace GlBindings
         private delegate void glDrawElements(int mode, int count, int type, int indices);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate int glGetAttribLocation(int programIndex, string name);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate int glGetUniformLocation(int programIndex, string name);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glUniform1i(int location, int uniformValue);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glUniform1f(int location, float uniformValue);
         #endregion
 
 
@@ -321,7 +333,22 @@ namespace GlBindings
         {
             return _GetAttribLocation(programIndex, location);
         }
-
+        public static int GetUniformLocation(int programIndex, string location)
+        {
+            return _GetUniformLocation(programIndex, location);
+        }
+        public static void SetUniform(int uniformLocation, int uniformValue)
+        {
+            _SetUniformInt(uniformLocation, uniformValue);
+        }
+        public static void SetUniform(int uniformLocation, bool uniformValue)
+        {
+            SetUniform(uniformLocation, uniformValue ? 1 : 0);
+        }
+        public static void SetUniform(int uniformLocation, float uniformValue)
+        {
+            _SetUniformFloat(uniformLocation, uniformValue);
+        }
         #endregion
     }
 }

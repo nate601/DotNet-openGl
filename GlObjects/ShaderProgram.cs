@@ -20,6 +20,27 @@ namespace GlBindings
         {
             Gl.LinkProgram(programIdentifier);
         }
+        private int GetUniformLocation(string uniformName)
+        {
+            return Gl.GetUniformLocation((int)this, uniformName);
+        }
+        public void SetUniform(string location, int val)
+        {
+            Gl.SetUniform(GetUniformLocation(location), val);
+        }
+        public void SetUniform(string location, bool val)
+        {
+            Gl.SetUniform(GetUniformLocation(location), val);
+        }
+        public void SetUniform(string location, float val)
+        {
+            Gl.SetUniform(GetUniformLocation(location), val);
+        }
+        public static explicit operator int(ShaderProgram pgm)
+        {
+            return (int)pgm.programIdentifier;
+        }
+
         public ShaderProgram()
         {
             programIdentifier = Gl.CreateProgram();

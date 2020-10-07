@@ -82,8 +82,9 @@ namespace openGlTest
                 Gl.Clear(0b100000000000000 | 0b100000000);
                 shaderProgram.Bind();
                 vao.Bind();
+                shaderProgram.SetUniform("time", (float)time);
+
                 Gl.DrawElements(0x0004, 6, 0x1405, 0);
-                /* Gl.DrawArrays(0x0004, 0, 3); */
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
             }
