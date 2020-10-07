@@ -1,6 +1,6 @@
 #version 330 core
 
-out vec4 frag_colour;
+layout (location = 0) out vec4 frag_colour;
 uniform float time;
 
 void main() {
