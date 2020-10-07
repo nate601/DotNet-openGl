@@ -36,6 +36,7 @@ namespace GlBindings
             _GetShaderSource = GetGlMethod<glGetShaderSource>();
             _SetViewport = GetGlMethod<glViewport>();
             _DrawElements = GetGlMethod<glDrawElements>();
+            _GetAttribLocation = GetGlMethod<glGetAttribLocation>();
         }
 
         private static T GetGlMethod<T>()
@@ -88,6 +89,7 @@ namespace GlBindings
         private static glGetShaderSource _GetShaderSource;
         private static glViewport _SetViewport;
         private static glDrawElements _DrawElements;
+        private static glGetAttribLocation _GetAttribLocation;
         #endregion
 
         #region Delegates
@@ -147,6 +149,8 @@ namespace GlBindings
         private delegate void glViewport(int x, int y, int width, int height);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDrawElements(int mode, int count, int type, int indices);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate int glGetAttribLocation(int programIndex, string name);
         #endregion
 
 
@@ -312,6 +316,10 @@ namespace GlBindings
         public static void DrawElements(int mode, int size, int type, int indices)
         {
             _DrawElements(mode, size, type, indices);
+        }
+        public static int GetAttribLocation(int programIndex, string location)
+        {
+            return _GetAttribLocation(programIndex, location);
         }
 
         #endregion
