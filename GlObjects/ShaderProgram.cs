@@ -45,6 +45,11 @@ namespace GlBindings
         {
             programIdentifier = Gl.CreateProgram();
         }
+        public ShaderProgram(params Shader[] shaders)
+        {
+            programIdentifier = Gl.CreateProgram();
+            AttachShader(shaders);
+        }
         public void Bind()
         {
             ActiveProgram = this;

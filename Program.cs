@@ -109,8 +109,7 @@ namespace openGlTest
                 Console.WriteLine($"Compilation failed:\n {fsInfoLog}");
             }
 
-            ShaderProgram shaderProgram = new ShaderProgram();
-            shaderProgram.AttachShader(vs, fs);
+            ShaderProgram shaderProgram = new ShaderProgram(vs, fs);
             shaderProgram.Link();
             return shaderProgram;
         }
