@@ -74,13 +74,13 @@ namespace openGlTest
 
             while (!Glfw.WindowShouldClose(window))
             {
-                double time = Glfw.GetTime();
+                float time = (float)Glfw.GetTime();
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
                 shaderProgram.Bind();
                 vao.Bind();
-                shaderProgram.SetUniform("time", (float)time);
+                shaderProgram.SetUniform("time", time);
 
                 Gl.DrawElements(0x0004, 6, 0x1405, 0);
                 Glfw.SwapBuffers(window);
