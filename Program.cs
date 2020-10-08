@@ -56,8 +56,8 @@ namespace openGlTest
                 1, 2, 3
             };
 
-            
-            
+
+
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             VertexArrayObject vao = new VertexArrayObject();
             ElementBufferObject ebo = new ElementBufferObject();
