@@ -206,18 +206,16 @@ namespace GlBindings
 
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(array[0].GetType()) * array.Length);
             deallocatePtr = () => Marshal.FreeHGlobal(ptr);
-            if (array is float[] v)
+            switch(array)
             {
-                Marshal.Copy(v, 0, ptr, array.Length);
-            }
-            else if (array is int[] i)
-            {
-                Marshal.Copy(i, 0, ptr, array.Length);
-            }
-            else
-            {
-                Console.WriteLine("Type not handled");
-                throw new Exception("Type not handled");
+                case float[] f:
+                    Marshal.Copy(f, 0, ptr, array.Length);
+                    break;
+                case int[] i:
+                    Marshal.Copy(i, 0, ptr, array.Length);
+                    break;
+                default:
+                    throw new Exception("Type not handled");
             }
             return ptr;
 
