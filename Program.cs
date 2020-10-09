@@ -20,7 +20,7 @@ namespace openGlTest
                 return -1;
             }
             Glfw.DefaultWindowHints(true);
-            IntPtr window = Glfw.CreateWindow(640, 480, ".NET Core GL");
+            Glfw.GlfwWindow window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
                 Console.WriteLine("Error creating context window.");

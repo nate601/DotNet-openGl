@@ -56,5 +56,21 @@ namespace GlBindings
             WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         }
+        public class GlfwWindow
+        {
+            private readonly IntPtr windowPointer;
+            public GlfwWindow(IntPtr windowptr)
+            {
+                windowPointer = windowptr;
+            }
+            public static implicit operator IntPtr(GlfwWindow w)
+            {
+                return w.windowPointer;
+            }
+            public static implicit operator GlfwWindow(IntPtr i)
+            {
+                return new GlfwWindow(i);
+            }
+        }
     }
 }
