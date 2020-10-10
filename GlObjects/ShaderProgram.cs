@@ -20,9 +20,29 @@ namespace GlBindings
         {
             Gl.LinkProgram(programIdentifier);
         }
+        public bool TryLink(out string infoLog)
+        {
+            Link();
+            if(LastLinkingSuccessful())
+            {
+                infoLog = "";
+                return true;
+            }
+            infoLog = GetInfoLog();
+            return false;
+        }
+        private bool LastLinkingSuccessful()
+        {
+            const int GL_LINK_STATUS = 0x8B82;
+            return Gl.GetProgram(this, GL_LINK_STATUS) == 1;
+        }
+        private string GetInfoLog()
+        {
+            return Gl.GetProgramInfoLog(this);
+        }
         private int GetUniformLocation(string uniformName)
         {
-            return Gl.GetUniformLocation((int)this, uniformName);
+            return Gl.GetUniformLocation(this, uniformName);
         }
         public void SetUniform(string locationName, int val)
         {
@@ -36,9 +56,13 @@ namespace GlBindings
         {
             Gl.SetUniform(GetUniformLocation(locationName), val);
         }
-        public static explicit operator int(ShaderProgram pgm)
+        public static implicit operator int(ShaderProgram pgm)
         {
             return (int)pgm.programIdentifier;
+        }
+        public static implicit operator uint(ShaderProgram pgm)
+        {
+            return pgm.programIdentifier;
         }
 
         public ShaderProgram()

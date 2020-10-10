@@ -40,6 +40,7 @@ namespace GlBindings
             _GetUniformLocation = GetGlMethod<glGetUniformLocation>();
             _SetUniformFloat = GetGlMethod<glUniform1f>();
             _SetUniformInt = GetGlMethod<glUniform1i>();
+            _GetProgramInfoLog = GetGlMethod<glGetProgramInfoLog>();
         }
 
         private static T GetGlMethod<T>()
@@ -96,6 +97,7 @@ namespace GlBindings
         private static glGetUniformLocation _GetUniformLocation;
         private static glUniform1f _SetUniformFloat;
         private static glUniform1i _SetUniformInt;
+        private static glGetProgramInfoLog _GetProgramInfoLog;
         #endregion
 
         #region Delegates
@@ -163,6 +165,8 @@ namespace GlBindings
         private delegate void glUniform1i(int location, int uniformValue);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glUniform1f(int location, float uniformValue);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGetProgramInfoLog(uint program, int maxLength, out int length, StringBuilder infoLog);
         #endregion
 
 
@@ -206,7 +210,7 @@ namespace GlBindings
 
             IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(array[0].GetType()) * array.Length);
             deallocatePtr = () => Marshal.FreeHGlobal(ptr);
-            switch(array)
+            switch (array)
             {
                 case float[] f:
                     Marshal.Copy(f, 0, ptr, array.Length);
@@ -265,16 +269,17 @@ namespace GlBindings
             _GetShader(shaderIndex, param, out int result);
             return result;
         }
-
-        public static string GetShaderInfoLog(uint shaderIndex)
-        {
-            return GetShaderInfoLog(shaderIndex, 128);
-        }
         public static string GetShaderInfoLog(uint shaderIndex, int length)
         {
             StringBuilder result = new StringBuilder(length);
             _GetShaderInfoLog(shaderIndex, length, out int _, result);
             return result.ToString();
+        }
+        public static string GetShaderInfoLog(uint shaderIndex)
+        {
+            const int GL_INFO_LOG_LENGTH = 0x8B84;
+            int length = GetShader(shaderIndex, GL_INFO_LOG_LENGTH);
+            return GetShaderInfoLog(shaderIndex, length);
         }
         public static void DebugMessageCallback(IntPtr callback)
         {
@@ -346,6 +351,18 @@ namespace GlBindings
         public static void SetUniform(int uniformLocation, float uniformValue)
         {
             _SetUniformFloat(uniformLocation, uniformValue);
+        }
+        public static string GetProgramInfoLog(uint program, int length)
+        {
+            StringBuilder result = new StringBuilder(length);
+            _GetProgramInfoLog(program, length, out int _, result);
+            return result.ToString();
+        }
+        public static string GetProgramInfoLog(uint program)
+        {
+            const int GL_INFO_LOG_LENGTH = 0x8B84;
+            int length = GetProgram(program, GL_INFO_LOG_LENGTH);
+            return GetProgramInfoLog(program, length);
         }
         #endregion
     }
