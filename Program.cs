@@ -110,7 +110,11 @@ namespace openGlTest
             }
 
             ShaderProgram shaderProgram = new ShaderProgram(vs, fs);
-            shaderProgram.Link();
+            if (!shaderProgram.TryLink(out string linkingInfoLog))
+            {
+                Console.WriteLine($"Linking failed:\n {linkingInfoLog}");
+            }
+
             return shaderProgram;
         }
 
