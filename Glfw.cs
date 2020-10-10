@@ -63,7 +63,7 @@ namespace GlBindings
             {
                 windowPointer = windowptr;
             }
-            public static implicit operator IntPtr(GlfwWindow w)
+            public static explicit operator IntPtr(GlfwWindow w)
             {
                 return w.windowPointer;
             }

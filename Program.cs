@@ -26,7 +26,7 @@ namespace openGlTest
                 Console.WriteLine("Error creating context window.");
                 return -1;
             }
-            Glfw.MakeContextCurrent(window);
+            Glfw.MakeContextCurrent((IntPtr)window);
             Gl.LoadGl();
             Gl.Enable(0x92E0);
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
