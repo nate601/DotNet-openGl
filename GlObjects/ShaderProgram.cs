@@ -24,17 +24,17 @@ namespace GlBindings
         {
             return Gl.GetUniformLocation((int)this, uniformName);
         }
-        public void SetUniform(string location, int val)
+        public void SetUniform(string locationName, int val)
         {
-            Gl.SetUniform(GetUniformLocation(location), val);
+            Gl.SetUniform(GetUniformLocation(locationName), val);
         }
-        public void SetUniform(string location, bool val)
+        public void SetUniform(string locationName, bool val)
         {
-            Gl.SetUniform(GetUniformLocation(location), val);
+            Gl.SetUniform(GetUniformLocation(locationName), val);
         }
-        public void SetUniform(string location, float val)
+        public void SetUniform(string locationName, float val)
         {
-            Gl.SetUniform(GetUniformLocation(location), val);
+            Gl.SetUniform(GetUniformLocation(locationName), val);
         }
         public static explicit operator int(ShaderProgram pgm)
         {
