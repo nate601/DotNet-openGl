@@ -50,7 +50,7 @@ namespace openGlTest
 
             Bitmap bp = (Bitmap)Image.FromFile("wall.jpg");
             int tex = Gl.GenTextures();
-            
+
 
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             VertexArrayObject vao = new VertexArrayObject();
