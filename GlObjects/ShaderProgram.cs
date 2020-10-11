@@ -1,9 +1,8 @@
 namespace GlBindings
 {
-    public class ShaderProgram
+    public class ShaderProgram : BaseBindable<ShaderProgram>
     {
         internal uint programIdentifier;
-        public static ShaderProgram ActiveProgram { get; private set; }
 
         public void AttachShader(Shader shader)
         {
@@ -23,7 +22,7 @@ namespace GlBindings
         public bool TryLink(out string infoLog)
         {
             Link();
-            if(LastLinkingSuccessful())
+            if (LastLinkingSuccessful())
             {
                 infoLog = "";
                 return true;
@@ -74,9 +73,9 @@ namespace GlBindings
             programIdentifier = Gl.CreateProgram();
             AttachShader(shaders);
         }
-        public void Bind()
+        public override void Bind()
         {
-            ActiveProgram = this;
+            CurrentlyBound = this;
             Gl.UseProgram(programIdentifier);
         }
     }

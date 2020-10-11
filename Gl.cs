@@ -100,7 +100,7 @@ namespace GlBindings
         private static glUniform1i _SetUniformInt;
         private static glGetProgramInfoLog _GetProgramInfoLog;
         private static glGenTextures _GenTextures;
-        #endregion
+        #endregion internalFunctions
 
         #region Delegates
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -171,7 +171,7 @@ namespace GlBindings
         private delegate void glGetProgramInfoLog(uint program, int maxLength, out int length, StringBuilder infoLog);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenTextures(int count, out int textureIndex);
-        #endregion
+        #endregion Delegates
 
 
 
@@ -373,6 +373,6 @@ namespace GlBindings
             _GenTextures(1, out int textureIndex);
             return textureIndex;
         }
-        #endregion
+        #endregion ExternalFunctions
     }
 }

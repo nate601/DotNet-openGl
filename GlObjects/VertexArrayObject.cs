@@ -1,11 +1,10 @@
 namespace GlBindings
 {
-    public class VertexArrayObject
+    public class VertexArrayObject : BaseBindable<VertexArrayObject>
     {
         private readonly uint identifier;
-        public static VertexArrayObject currentlyBound;
-        public bool IsCurrentlyBound => currentlyBound == this;
-        private uint currentAttributeCount = 0;
+
+        private uint currentAttributeCount;
 
         public static explicit operator uint(VertexArrayObject i)
         {
@@ -20,9 +19,9 @@ namespace GlBindings
         {
             Gl.EnableVertexAttribArray(index);
         }
-        public void Bind()
+        public override void Bind()
         {
-            currentlyBound = this;
+            CurrentlyBound = this;
             Gl.BindVertexArray(identifier);
         }
         public void VertexAttribPointer(uint index, int size, DataType type, bool normalized, int stride)

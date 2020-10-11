@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace GlBindings
 {
-    public class VertexBufferObject
+    public class VertexBufferObject : BaseBindable<VertexBufferObject>
     {
         private readonly BufferType bufType;
         private readonly uint identifier;
@@ -16,7 +16,7 @@ namespace GlBindings
             identifier = Gl.GenBuffers();
             this.bufType = bufType;
         }
-        public void Bind()
+        public override void Bind()
         {
             Gl.BindBuffer((int)bufType, identifier);
         }

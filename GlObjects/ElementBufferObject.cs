@@ -2,10 +2,9 @@ using System.Runtime.InteropServices;
 
 namespace GlBindings
 {
-    public class ElementBufferObject
+    public class ElementBufferObject : BaseBindable<ElementBufferObject>
     {
         private readonly uint identifier;
-        public static ElementBufferObject currentlyBound;
 
         public static explicit operator uint(ElementBufferObject ebo)
         {
@@ -15,14 +14,10 @@ namespace GlBindings
         {
             identifier = Gl.GenBuffers();
         }
-        public void Bind()
+        public override void Bind()
         {
             Gl.BindBuffer(0x8893, identifier);
-            currentlyBound = this;
-        }
-        public bool IsCurrentlyBound()
-        {
-            return currentlyBound == this;
+            CurrentlyBound = this;
         }
         public void BufferData(int[] indices, DrawType drawType)
         {
