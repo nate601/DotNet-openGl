@@ -41,6 +41,7 @@ namespace GlBindings
             _SetUniformFloat = GetGlMethod<glUniform1f>();
             _SetUniformInt = GetGlMethod<glUniform1i>();
             _GetProgramInfoLog = GetGlMethod<glGetProgramInfoLog>();
+            _GenTextures = GetGlMethod<glGenTextures>();
         }
 
         private static T GetGlMethod<T>()
@@ -98,6 +99,7 @@ namespace GlBindings
         private static glUniform1f _SetUniformFloat;
         private static glUniform1i _SetUniformInt;
         private static glGetProgramInfoLog _GetProgramInfoLog;
+        private static glGenTextures _GenTextures;
         #endregion
 
         #region Delegates
@@ -167,6 +169,8 @@ namespace GlBindings
         private delegate void glUniform1f(int location, float uniformValue);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetProgramInfoLog(uint program, int maxLength, out int length, StringBuilder infoLog);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGenTextures(int count, out int textureIndex);
         #endregion
 
 
@@ -363,6 +367,11 @@ namespace GlBindings
             const int GL_INFO_LOG_LENGTH = 0x8B84;
             int length = GetProgram(program, GL_INFO_LOG_LENGTH);
             return GetProgramInfoLog(program, length);
+        }
+        public static int GenTextures()
+        {
+            _GenTextures(1, out int textureIndex);
+            return textureIndex;
         }
         #endregion
     }
