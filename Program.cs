@@ -28,7 +28,8 @@ namespace openGlTest
                 return -1;
             }
             Glfw.MakeContextCurrent(window);
-            Gl.LoadGl();
+            /* Gl.LoadGl(); */
+            Gl.GetAllDelegates();
             Gl.Enable(0x92E0);
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
             Gl.SetViewport(0, 0, 640, 480);

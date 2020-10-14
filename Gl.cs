@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -7,57 +8,10 @@ namespace GlBindings
 {
     internal static class Gl
     {
-        public static void LoadGl()
-        {
-            _GetGlString = GetGlMethod<glGetString>();
-            _DrawArrays = GetGlMethod<glDrawArrays>();
-            _Enable = GetGlMethod<glEnable>();
-            _DepthFunction = GetGlMethod<glDepthFunc>();
-            _GenBuffers = GetGlMethod<glGenBuffers>();
-            _BindBuffer = GetGlMethod<glBindBuffer>();
-            _BufferData = GetGlMethod<glBufferData>();
-            _GenVertexArrays = GetGlMethod<glGenVertexArrays>();
-            _BindVertexArray = GetGlMethod<glBindVertexArray>();
-            _EnableVertexAttribArray = GetGlMethod<glEnableVertexAttribArray>();
-            _VertexAttribPointer = GetGlMethod<glVertexAttribPointer>();
-            _CreateShader = GetGlMethod<glCreateShader>();
-            _ShaderSource = GetGlMethod<glShaderSource>();
-            _CompileShader = GetGlMethod<glCompileShader>();
-            _GetShader = GetGlMethod<glGetShaderiv>();
-            _GetShaderInfoLog = GetGlMethod<glGetShaderInfoLog>();
-            _DebugMessageCallback = GetGlMethod<glDebugMessageCallback>();
-            _CreateProgram = GetGlMethod<glCreateProgram>();
-            _AttachShader = GetGlMethod<glAttachShader>();
-            _LinkProgram = GetGlMethod<glLinkProgram>();
-            _Clear = GetGlMethod<glClear>();
-            _UseProgram = GetGlMethod<glUseProgram>();
-            _GetProgram = GetGlMethod<glGetProgramiv>();
-            _ClearColor = GetGlMethod<glClearColor>();
-            _GetShaderSource = GetGlMethod<glGetShaderSource>();
-            _SetViewport = GetGlMethod<glViewport>();
-            _DrawElements = GetGlMethod<glDrawElements>();
-            _GetAttribLocation = GetGlMethod<glGetAttribLocation>();
-            _GetUniformLocation = GetGlMethod<glGetUniformLocation>();
-            _SetUniformFloat = GetGlMethod<glUniform1f>();
-            _SetUniformInt = GetGlMethod<glUniform1i>();
-            _GetProgramInfoLog = GetGlMethod<glGetProgramInfoLog>();
-            _GenTextures = GetGlMethod<glGenTextures>();
-            _TexImage2D = GetGlMethod<glTexImage2D>();
-            _BindTexture = GetGlMethod<glBindTexture>();
-            _GenerateMipmap = GetGlMethod<glGenerateMipmap>();
-        }
-
-        private static T GetGlMethod<T>()
-        {
-#pragma warning disable CS0618
-            return GetGlMethod<T>(typeof(T).Name);
-#pragma warning restore CS0618
-        }
-
-        [Obsolete("Use GetGlMethod without the string name, strings should match in cpp and csharp")]
+#pragma warning disable // Disable warnings because this function is only called dynamically at runtime
         private static T GetGlMethod<T>(string procName)
+#pragma warning enable
         {
-            //Console.WriteLine($"Attempting to find function {procName} for delegate {typeof(T).Name}");
             IntPtr pointer = Glfw.GetGlFunctionAddress(procName);
             if (pointer == IntPtr.Zero)
             {
@@ -68,8 +22,23 @@ namespace GlBindings
             //Console.WriteLine($"SUCCESS: Pointer {procName} for delegate {typeof(T).Name} is {pointer.ToString("X")}");
             return Marshal.GetDelegateForFunctionPointer<T>(pointer);
         }
+        public static void GetAllDelegates()
+        {
+            foreach (Type delegateType in typeof(Gl).GetNestedTypes(BindingFlags.NonPublic).Where(x => x.BaseType == typeof(MulticastDelegate)))
+            {
+                /* Console.WriteLine("Delegate type name: " + delegateType.Name); */
+                foreach (FieldInfo internalFunction in typeof(Gl).GetFields(BindingFlags.NonPublic | BindingFlags.Static).Where(x => x.FieldType == delegateType))
+                {
+                    /* Console.WriteLine("Internal function name: " + internalFunction.Name); */
+                    object delegateForPtr = typeof(Gl).GetMethod("GetGlMethod", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(delegateType).Invoke(null, new[] { delegateType.Name });
+                    internalFunction.SetValue(null, delegateForPtr);
+                }
+
+            }
+        }
 
         #region internalFunctions
+#pragma warning disable  //Disable warnings because the functions are assigned dynamically at runtime
         private static glDrawArrays _DrawArrays;
         private static glGetString _GetGlString;
         private static glEnable _Enable;
@@ -106,6 +75,7 @@ namespace GlBindings
         private static glTexImage2D _TexImage2D;
         private static glBindTexture _BindTexture;
         private static glGenerateMipmap _GenerateMipmap;
+#pragma warning enable
         #endregion internalFunctions
 
         #region Delegates
