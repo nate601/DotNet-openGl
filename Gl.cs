@@ -42,6 +42,9 @@ namespace GlBindings
             _SetUniformInt = GetGlMethod<glUniform1i>();
             _GetProgramInfoLog = GetGlMethod<glGetProgramInfoLog>();
             _GenTextures = GetGlMethod<glGenTextures>();
+            _TexImage2D = GetGlMethod<glTexImage2D>();
+            _BindTexture = GetGlMethod<glBindTexture>();
+            _GenerateMipmap = GetGlMethod<glGenerateMipmap>();
         }
 
         private static T GetGlMethod<T>()
@@ -100,6 +103,9 @@ namespace GlBindings
         private static glUniform1i _SetUniformInt;
         private static glGetProgramInfoLog _GetProgramInfoLog;
         private static glGenTextures _GenTextures;
+        private static glTexImage2D _TexImage2D;
+        private static glBindTexture _BindTexture;
+        private static glGenerateMipmap _GenerateMipmap;
         #endregion internalFunctions
 
         #region Delegates
@@ -171,8 +177,13 @@ namespace GlBindings
         private delegate void glGetProgramInfoLog(uint program, int maxLength, out int length, StringBuilder infoLog);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenTextures(int count, out int textureIndex);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glTexImage2D(int targetType, int levelOfDetail, int internalFormat, int width, int height, int border, int format, int type, IntPtr pointerToData);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glBindTexture(int target, int texture);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glGenerateMipmap(int target);
         #endregion Delegates
-
 
 
         #region ExternalFunctions
@@ -372,6 +383,18 @@ namespace GlBindings
         {
             _GenTextures(1, out int textureIndex);
             return textureIndex;
+        }
+        public static void TexImage2D(int targetType, int levelOfDetail, int internalFormat, int width, int height, int border, int format, int type, IntPtr pointerToData)
+        {
+            _TexImage2D(targetType, levelOfDetail, internalFormat, width, height, border, format, type, pointerToData);
+        }
+        public static void BindTexture(int target, int texture)
+        {
+            _BindTexture(target, texture);
+        }
+        public static void GenerateMipmap(int target)
+        {
+            _GenerateMipmap(target);
         }
         #endregion ExternalFunctions
     }

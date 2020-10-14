@@ -38,10 +38,11 @@ namespace openGlTest
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
 
             float[] vertices = new float[]{
-            0.5f,  0.5f, 0.0f,  // top right
-            0.5f, -0.5f, 0.0f,  // bottom right
-            -0.5f, -0.5f, 0.0f,  // bottom left
-            -0.5f,  0.5f, 0.0f   // top left
+            //position                  tex
+             0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // top right
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,// bottom right
+            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,// bottom left
+            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f// top left
             };
             int[] indices = new int[]{
                 0, 1, 3,
@@ -50,11 +51,31 @@ namespace openGlTest
 
             Bitmap bp = (Bitmap)Image.FromFile("wall.jpg");
             int tex = Gl.GenTextures();
+            Gl.BindTexture(0x0DE1, tex);
+            byte[] texData = new byte[bp.Width * bp.Height * 3];
+            IntPtr texDataPointer = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(byte)) * texData.Length);
+            for (int x = 0; x < bp.Width; x++)
+            {
+                for (int y = 0; y < bp.Height; y++)
+                {
+                    Color currentPixelColor = bp.GetPixel(x, y);
+                    texData[(bp.Width * x * 3) + (y * 3) + 0] = currentPixelColor.R;
+                    texData[(bp.Width * x * 3) + (y * 3) + 1] = currentPixelColor.G;
+                    texData[(bp.Width * x * 3) + (y * 3) + 2] = currentPixelColor.B;
+                }
+            }
+            Marshal.Copy(texData, 0, texDataPointer, texData.Length);
+
+            Gl.TexImage2D(0x0DE1, 0, 0x1907, bp.Width, bp.Height, 0, 0x1907, 0x1401, texDataPointer);
+            Gl.GenerateMipmap(0x0DE1);
+
+
 
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             VertexArrayObject vao = new VertexArrayObject();
             ElementBufferObject ebo = new ElementBufferObject();
 
+            Gl.BindTexture(0x0DE1, tex);
             vao.Bind();
 
             vbo.Bind();
@@ -63,7 +84,8 @@ namespace openGlTest
             ebo.Bind();
             ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
 
-            _ = vao.AddAttribute(3, DataType.GL_FLOAT, false, 0);
+            _ = vao.AddAttribute(3, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
+            _ = vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
 

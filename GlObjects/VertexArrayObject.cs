@@ -1,4 +1,4 @@
-namespace GlBindings
+    namespace GlBindings
 {
     public class VertexArrayObject : BaseBindable<VertexArrayObject>
     {
