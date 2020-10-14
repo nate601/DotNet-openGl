@@ -49,27 +49,27 @@ namespace openGlTest
                 1, 2, 3
             };
 
-            Bitmap bp = (Bitmap)Image.FromFile("wall.jpg");
             int tex = Gl.GenTextures();
             Gl.BindTexture(0x0DE1, tex);
-            byte[] texData = new byte[bp.Width * bp.Height * 3];
-            IntPtr texDataPointer = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(byte)) * texData.Length);
-            for (int x = 0; x < bp.Width; x++)
+            using (Bitmap bp = (Bitmap)Image.FromFile("wall.jpg"))
             {
-                for (int y = 0; y < bp.Height; y++)
+                byte[] texData = new byte[bp.Width * bp.Height * 3];
+                IntPtr texDataPointer = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(byte)) * texData.Length);
+                for (int x = 0; x < bp.Width; x++)
                 {
-                    Color currentPixelColor = bp.GetPixel(x, y);
-                    texData[(bp.Width * x * 3) + (y * 3) + 0] = currentPixelColor.R;
-                    texData[(bp.Width * x * 3) + (y * 3) + 1] = currentPixelColor.G;
-                    texData[(bp.Width * x * 3) + (y * 3) + 2] = currentPixelColor.B;
+                    for (int y = 0; y < bp.Height; y++)
+                    {
+                        Color currentPixelColor = bp.GetPixel(x, y);
+                        texData[(3 * ((bp.Width * x) + y)) + 0] = currentPixelColor.R;
+                        texData[(3 * ((bp.Width * x) + y)) + 1] = currentPixelColor.G;
+                        texData[(3 * ((bp.Width * x) + y)) + 2] = currentPixelColor.B;
+                    }
                 }
+                Marshal.Copy(texData, 0, texDataPointer, texData.Length);
+
+                Gl.TexImage2D(0x0DE1, 0, 0x1907, bp.Width, bp.Height, 0, 0x1907, 0x1401, texDataPointer);
+                Gl.GenerateMipmap(0x0DE1);
             }
-            Marshal.Copy(texData, 0, texDataPointer, texData.Length);
-
-            Gl.TexImage2D(0x0DE1, 0, 0x1907, bp.Width, bp.Height, 0, 0x1907, 0x1401, texDataPointer);
-            Gl.GenerateMipmap(0x0DE1);
-
-
 
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             VertexArrayObject vao = new VertexArrayObject();
