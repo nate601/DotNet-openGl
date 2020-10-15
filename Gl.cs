@@ -75,6 +75,7 @@ namespace GlBindings
         private static glTexImage2D _TexImage2D;
         private static glBindTexture _BindTexture;
         private static glGenerateMipmap _GenerateMipmap;
+        private static glActiveTexture _ActiveTexture;
 #pragma warning enable
         #endregion internalFunctions
 
@@ -153,6 +154,8 @@ namespace GlBindings
         private delegate void glBindTexture(int target, int texture);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenerateMipmap(int target);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glActiveTexture(int texture);
         #endregion Delegates
 
 
@@ -365,6 +368,11 @@ namespace GlBindings
         public static void GenerateMipmap(int target)
         {
             _GenerateMipmap(target);
+        }
+        public static void ActiveTexture(int textureNumber)
+        {
+            const int GL_TEXTURE0 = 0x84C0;
+            _ActiveTexture(GL_TEXTURE0 + textureNumber);
         }
         #endregion ExternalFunctions
     }

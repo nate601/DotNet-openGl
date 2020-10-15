@@ -76,6 +76,7 @@ namespace openGlTest
             VertexArrayObject vao = new VertexArrayObject();
             ElementBufferObject ebo = new ElementBufferObject();
 
+            Gl.ActiveTexture(0);
             Gl.BindTexture(0x0DE1, tex);
             vao.Bind();
 
@@ -89,6 +90,7 @@ namespace openGlTest
             _ = vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
+            shaderProgram.SetUniform("tex", 0);
 
             while (!Glfw.WindowShouldClose(window))
             {
