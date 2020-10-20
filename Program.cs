@@ -57,7 +57,6 @@ namespace openGlTest
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             VertexArrayObject vao = new VertexArrayObject();
             ElementBufferObject ebo = new ElementBufferObject();
-            
 
             vao.Bind();
 
@@ -71,7 +70,9 @@ namespace openGlTest
             _ = vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
+            shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
+            shaderProgram.SetUniform("vectorTest", new Vector3D(0.5f, 1, 1));
 
             while (!Glfw.WindowShouldClose(window))
             {

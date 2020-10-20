@@ -76,6 +76,7 @@ namespace GlBindings
         private static glBindTexture _BindTexture;
         private static glGenerateMipmap _GenerateMipmap;
         private static glActiveTexture _ActiveTexture;
+        private static glUniform3fv _SetUniformFloatVector3;
 #pragma warning enable
         #endregion internalFunctions
 
@@ -144,6 +145,8 @@ namespace GlBindings
         private delegate void glUniform1i(int location, int uniformValue);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glUniform1f(int location, float uniformValue);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private delegate void glUniform3fv(int location, int count, float[] val);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetProgramInfoLog(uint program, int maxLength, out int length, StringBuilder infoLog);
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
@@ -339,6 +342,10 @@ namespace GlBindings
         public static void SetUniform(int uniformLocation, float uniformValue)
         {
             _SetUniformFloat(uniformLocation, uniformValue);
+        }
+        public static void SetUniform(int uniformLocation, float[] uniformValue)
+        {
+            _SetUniformFloatVector3(uniformLocation, 1, uniformValue);
         }
         public static string GetProgramInfoLog(uint program, int length)
         {

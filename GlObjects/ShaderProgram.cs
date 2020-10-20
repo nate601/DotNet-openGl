@@ -55,6 +55,14 @@ namespace GlBindings
         {
             Gl.SetUniform(GetUniformLocation(locationName), val);
         }
+        public void SetUniform(string locationName, Vector2D val)
+        {
+            Gl.SetUniform(GetUniformLocation(locationName), new float[] { val.x, val.y, 0 });
+        }
+        public void SetUniform(string locationName, Vector3D val)
+        {
+            Gl.SetUniform(GetUniformLocation(locationName), new float[] { val.x, val.y, val.z });
+        }
         public static implicit operator int(ShaderProgram pgm)
         {
             return (int)pgm.programIdentifier;
