@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using GlBindings;
 
@@ -39,11 +38,11 @@ namespace openGlTest
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
 
             float[] vertices = new float[]{
-            //position                  tex
-             0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // top right
-             0.5f, -0.5f, 0.0f,  1.0f, 0.0f,// bottom right
-            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,// bottom left
-            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f// top left
+            //position           texture 
+             0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // top    right
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // bottom left
+            -0.5f,  0.5f, 0.0f,  0.0f, 1.0f  // top    left
             };
             int[] indices = new int[]{
                 0, 1, 3,
@@ -58,6 +57,7 @@ namespace openGlTest
             VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
             VertexArrayObject vao = new VertexArrayObject();
             ElementBufferObject ebo = new ElementBufferObject();
+            
 
             vao.Bind();
 
