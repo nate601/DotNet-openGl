@@ -48,4 +48,12 @@ namespace GlBindings
             return new Vector3(x, y, z);
         }
     }
+    public struct Matrix4x4
+    {
+        public System.Numerics.Matrix4x4 innerMatrix;
+        public System.Numerics.Matrix4x4 ToNumerics()
+        {
+            return innerMatrix;
+        }
+    }
 }

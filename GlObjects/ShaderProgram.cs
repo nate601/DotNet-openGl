@@ -63,6 +63,18 @@ namespace GlBindings
         {
             Gl.SetUniform(GetUniformLocation(locationName), new float[] { val.x, val.y, val.z });
         }
+        public void SetUniform(string locationName, float[,] val)
+        {
+            float[] flattenedArray = new float[val.GetLength(1) * val.GetLength(0)];
+            for (int i = 0; i < val.GetLength(1); i++)
+            {
+                for (int j = 0; j < val.GetLength(0); j++)
+                {
+                    flattenedArray[(val.GetLength(0) * j) + i] = val[j, i];
+                }
+            }
+            Gl.SetUniform(GetUniformLocation(locationName), flattenedArray, true);
+        }
         public static implicit operator int(ShaderProgram pgm)
         {
             return (int)pgm.programIdentifier;
@@ -71,7 +83,6 @@ namespace GlBindings
         {
             return pgm.programIdentifier;
         }
-
         public ShaderProgram()
         {
             programIdentifier = Gl.CreateProgram();

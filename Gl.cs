@@ -77,6 +77,7 @@ namespace GlBindings
         private static glGenerateMipmap _GenerateMipmap;
         private static glActiveTexture _ActiveTexture;
         private static glUniform3fv _SetUniformFloatVector3;
+        private static glUniformMatrix4fv _SetUniformMatrix4fv;
 #pragma warning enable
         #endregion internalFunctions
 
@@ -120,6 +121,7 @@ namespace GlBindings
         private delegate void glBindTexture(int target, int texture);
         private delegate void glGenerateMipmap(int target);
         private delegate void glActiveTexture(int texture);
+        private delegate void glUniformMatrix4fv(int location, int count, bool transpose, float[] val);
         #endregion Delegates
 
 
@@ -304,16 +306,35 @@ namespace GlBindings
         {
             _SetUniformFloat(uniformLocation, uniformValue);
         }
-        public static void SetUniform(int uniformLocation, float[] uniformValue)
+        public static void SetUniform(int uniformLocation, float[] uniformValue, bool matrix = false)
         {
+            if (matrix)
+            {
+                SetUniformMatrix(uniformLocation, uniformValue);
+                return;
+            }
             switch (uniformValue.Length)
             {
                 case 3:
                     _SetUniformFloatVector3(uniformLocation, 1, uniformValue);
                     break;
                 default:
+                    throw new Exception($"Uniform vector of length {uniformValue.Length} not implemented.");
                     break;
             }
+        }
+        private static void SetUniformMatrix(int uniformLocation, float[] uniformValue)
+        {
+            switch (uniformValue.Length)
+            {
+                case 4*4:
+                    _SetUniformMatrix4fv(uniformLocation, 1, false, uniformValue);
+                    break;
+                default:
+                    throw new Exception($"Uniform matrix of length {uniformValue.Length} not implemented.");
+                    break;
+            }
+
         }
         public static string GetProgramInfoLog(uint program, int length)
         {
