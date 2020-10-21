@@ -81,83 +81,44 @@ namespace GlBindings
         #endregion internalFunctions
 
         #region Delegates
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDrawArrays(int mode, int first, int count);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate IntPtr glGetString(int gl_reference);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glEnable(int cap);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDepthFunc(int depthFunctionMethod);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenBuffers(int size, ref uint buffers);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBindBuffer(int type, uint bufferIndex);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBufferData(int type, int size, IntPtr data, int usage);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenVertexArrays(int size, ref uint arrays);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBindVertexArray(uint array);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glEnableVertexAttribArray(uint index);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glVertexAttribPointer(uint index, int size, int type, bool normalized, int stride, IntPtr pointer);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate uint glCreateShader(int shaderType);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glShaderSource(uint shader, int count, string[] content, int[] lengths);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glCompileShader(uint shader);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetShaderiv(uint shader, int parameterName, out int results);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetShaderInfoLog(uint shaderIndex, int maxLength, out int size, StringBuilder infoLog);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate void GlErrorCallbackDelegate(int source, int type, int id, int severeity, int length, string message, IntPtr userParams);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDebugMessageCallback(IntPtr callback, IntPtr userParam);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate uint glCreateProgram();
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glAttachShader(uint program, uint shader);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glLinkProgram(uint program);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glClear(int bitField);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glUseProgram(uint program);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetProgramiv(uint program, int pnmae, out int result);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glClearColor(float red, float green, float blue, float alpha);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetShaderSource(uint shader, int bufferSize, out int length, StringBuilder source);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glViewport(int x, int y, int width, int height);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glDrawElements(int mode, int count, int type, int indices);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate int glGetAttribLocation(int programIndex, string name);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate int glGetUniformLocation(int programIndex, string name);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glUniform1i(int location, int uniformValue);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glUniform1f(int location, float uniformValue);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glUniform3fv(int location, int count, float[] val);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGetProgramInfoLog(uint program, int maxLength, out int length, StringBuilder infoLog);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenTextures(int count, out int textureIndex);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glTexImage2D(int targetType, int levelOfDetail, int internalFormat, int width, int height, int border, int format, int type, IntPtr pointerToData);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glBindTexture(int target, int texture);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glGenerateMipmap(int target);
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         private delegate void glActiveTexture(int texture);
         #endregion Delegates
 
@@ -345,7 +306,14 @@ namespace GlBindings
         }
         public static void SetUniform(int uniformLocation, float[] uniformValue)
         {
-            _SetUniformFloatVector3(uniformLocation, 1, uniformValue);
+            switch (uniformValue.Length)
+            {
+                case 3:
+                    _SetUniformFloatVector3(uniformLocation, 1, uniformValue);
+                    break;
+                default:
+                    break;
+            }
         }
         public static string GetProgramInfoLog(uint program, int length)
         {
