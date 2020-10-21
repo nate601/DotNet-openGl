@@ -28,7 +28,7 @@ namespace openGlTest
             }
             Glfw.MakeContextCurrent(window);
             /* Gl.LoadGl(); */
-            Gl.GetAllDelegates();
+            Gl.LoadDelegates();
             Gl.Enable(0x92E0);
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
             Gl.SetViewport(0, 0, 640, 480);
@@ -100,19 +100,22 @@ namespace openGlTest
             if (!vs.TryCompile(out string vsInfolog))
             {
                 Console.WriteLine($"Compilation failed:\n {vsInfolog}");
+                throw new Exception(vsInfolog);
             }
 
             Shader fs = new Shader(Shader.ShaderTypes.GL_FRAGMENT_SHADER);
             fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
-            if (!fs.TryCompile(out string fsInfoLog))
+            if (!fs.TryCompile(out string fsInfolog))
             {
-                Console.WriteLine($"Compilation failed:\n {fsInfoLog}");
+                Console.WriteLine($"Compilation failed:\n {fsInfolog}");
+                throw new Exception(fsInfolog);
             }
 
             ShaderProgram shaderProgram = new ShaderProgram(vs, fs);
-            if (!shaderProgram.TryLink(out string linkingInfoLog))
+            if (!shaderProgram.TryLink(out string linkingInfolog))
             {
-                Console.WriteLine($"Linking failed:\n {linkingInfoLog}");
+                Console.WriteLine($"Linking failed:\n {linkingInfolog}");
+                throw new Exception(linkingInfolog);
             }
 
             return shaderProgram;

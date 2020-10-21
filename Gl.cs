@@ -22,7 +22,7 @@ namespace GlBindings
             //Console.WriteLine($"SUCCESS: Pointer {procName} for delegate {typeof(T).Name} is {pointer.ToString("X")}");
             return Marshal.GetDelegateForFunctionPointer<T>(pointer);
         }
-        public static void GetAllDelegates()
+        public static void LoadDelegates()
         {
             foreach (Type delegateType in typeof(Gl).GetNestedTypes(BindingFlags.NonPublic).Where(x => x.BaseType == typeof(MulticastDelegate)))
             {
