@@ -39,8 +39,7 @@ namespace GlBindings
                 return null;
             }
             int length = Gl.GetShader(shaderIdentifier, 0x8B84);
-            string infoLog = Gl.GetShaderInfoLog(shaderIdentifier, length);
-            return infoLog;
+            return Gl.GetShaderInfoLog(shaderIdentifier, length);
         }
         private bool HasInfoLog()
         {
@@ -53,8 +52,7 @@ namespace GlBindings
 
         public void LoadShaderSourceFromFile(string filePath)
         {
-            string v = File.ReadAllText(filePath);
-            ShaderSource = v;
+            ShaderSource = File.ReadAllText(filePath);
         }
 
         public Shader(ShaderTypes shaderType)
