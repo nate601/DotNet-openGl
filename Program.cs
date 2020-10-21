@@ -17,14 +17,14 @@ namespace openGlTest
             else
             {
                 Console.WriteLine("Glfw has failed to successfully initialize");
-                return -1;
+                throw new Exception("Glfw has failed to successfully initialize");
             }
             Glfw.DefaultWindowHints(true);
             Glfw.GlfwWindow window = Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
                 Console.WriteLine("Error creating context window.");
-                return -1;
+                throw new Exception("Error creating context window.");
             }
             Glfw.MakeContextCurrent(window);
             /* Gl.LoadGl(); */
