@@ -73,6 +73,13 @@ namespace openGlTest
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
             shaderProgram.SetUniform("vectorTest", new Vector3D(0.5f, 1, 1));
+            float[,] transformation = new float[,]{
+                {1,0,0,0},
+                {0,1,0,0},
+                {0,0,1,0},
+                {0,0,0,1}
+            };
+            shaderProgram.SetUniform("matrixTest", transformation);
 
             while (!Glfw.WindowShouldClose(window))
             {
