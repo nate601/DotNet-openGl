@@ -66,13 +66,14 @@ namespace openGlTest
             ebo.Bind();
             ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
 
+            // location = 0
             _ = vao.AddAttribute(3, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
+            // location = 1
             _ = vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
-            shaderProgram.SetUniform("vectorTest", new Vector3D(0.5f, 1, 1));
             float[,] transformation = new float[,]{
                 {1,0,0,0},
                 {0,1,0,0},

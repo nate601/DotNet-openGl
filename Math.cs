@@ -50,5 +50,30 @@ namespace GlBindings
     }
     public static class MathExtensions
     {
+        public static float[,] ExtractToFloatArray(this Matrix4x4 mat)
+        {
+            float[,] retVal = new float[4, 4];
+            retVal[0, 0] = mat.M11;
+            retVal[0, 1] = mat.M12;
+            retVal[0, 2] = mat.M13;
+            retVal[0, 3] = mat.M14;
+
+            retVal[1, 0] = mat.M21;
+            retVal[1, 1] = mat.M22;
+            retVal[1, 2] = mat.M23;
+            retVal[1, 3] = mat.M24;
+
+            retVal[2, 0] = mat.M31;
+            retVal[2, 1] = mat.M32;
+            retVal[2, 2] = mat.M33;
+            retVal[2, 3] = mat.M34;
+
+            retVal[3, 0] = mat.M41;
+            retVal[3, 1] = mat.M42;
+            retVal[3, 2] = mat.M43;
+            retVal[3, 3] = mat.M44;
+
+            return retVal;
+        }
     }
 }

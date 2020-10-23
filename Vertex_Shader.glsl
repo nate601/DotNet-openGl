@@ -3,7 +3,6 @@
 layout (location = 0) in vec3 vp;
 layout (location = 1) in vec2 aTexCoord;
 
-uniform vec3 vectorTest;
 uniform mat4 matrixTest;
 
 out vec2 TexCoord;
