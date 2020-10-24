@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using System.Text;
 
@@ -51,9 +52,20 @@ namespace GlBindings
     }
     public static class MatrixProjections
     {
+        public static readonly float[,] identity =
+            new float[,]{
+                {1,0,0,0},
+                {0,1,0,0},
+                {0,0,1,0},
+                {0,0,0,1}
+            };
         public static float[,] GetOrthoProjection(float width, float height, float zNear, float zFar)
         {
             return Matrix4x4.CreateOrthographic(width, height, zNear, zFar).ExtractToFloatArray();
+        }
+        public static float[,] GetPerspectiveProjection(float fieldOfViewDegrees, float height, float width, float near, float far)
+        {
+            return Matrix4x4.CreatePerspectiveFieldOfView(Deg2Rad(fieldOfViewDegrees), height / width, near, far).ExtractToFloatArray();
         }
         public static float[,] Transform(float[,] matArray, Vector3D vec)
         {
@@ -61,8 +73,20 @@ namespace GlBindings
             Matrix4x4 trans = Matrix4x4.CreateTranslation(vec.x, vec.y, vec.z);
             return Matrix4x4.Multiply(mat, trans).ExtractToFloatArray();
         }
-
-
+        public static float[,] Transform(float[,] matArray, Vector3D vec, float rotationDegrees)
+        {
+            Matrix4x4 mat = matArray.FillMatrix4x4();
+            Matrix4x4 trans = Matrix4x4.Transform(mat, Quaternion.CreateFromAxisAngle(vec.ToNumerics(), Deg2Rad(rotationDegrees)));
+            return trans.ExtractToFloatArray();
+        }
+        public static float[,] Translation(Vector3D vec)
+        {
+            return Matrix4x4.CreateTranslation(vec.x, vec.y, vec.z).ExtractToFloatArray();
+        }
+        public static float Deg2Rad(float degrees)
+        {
+            return MathF.PI / 180 * degrees;
+        }
     }
     public static class MathExtensions
     {
@@ -114,7 +138,7 @@ namespace GlBindings
                     {
                         _ = sb.Append(' ');
                     }
-                    _ = arr[j,i] < 0 ? sb.Append(' ') : null;
+                    _ = arr[j, i] < 0 ? sb.Append(' ') : null;
                 }
                 _ = sb.Append("\n");
             }

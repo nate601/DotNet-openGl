@@ -39,7 +39,7 @@ namespace openGlTest
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
 
             float[] vertices = new float[]{
-            //position           texture
+            //position location1   texture location2
              0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // top    right
              0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // bottom right
             -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // bottom left
@@ -75,27 +75,17 @@ namespace openGlTest
             ShaderProgram shaderProgram = GenerateShaderProgram();
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
-            float[,] transformation = new float[,]{
-                {1,0,0,0},
-                {0,1,0,0},
-                {0,0,1,0},
-                {0,0,0,1}
-            };
 
-            float[,] modelProj = (float[,])transformation.Clone();
-            modelProj = Matrix4x4.Transform(modelProj.FillMatrix4x4(), Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), MathF.PI / 180f * -55.0f)).ExtractToFloatArray();
-            float[,] viewProj = (float[,])transformation.Clone();
-            viewProj = Matrix4x4.CreateTranslation(0, 0, -3).ExtractToFloatArray();
-            float[,] projection = (float[,])transformation.Clone();
-            projection = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 180f * 45f, 800f/600f, 0.1f, 100).ExtractToFloatArray();
-            Console.WriteLine(modelProj.ToStringPretty());
-            Console.WriteLine(viewProj.ToStringPretty());
+            float[,] model = MatrixProjections.Transform(MatrixProjections.identity, new Vector3D(1, 0, 0), -55);
+            float[,] view = MatrixProjections.Translation(new Vector3D(0, 0, -3));
+            float[,] projection = MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100);
+            Console.WriteLine(model.ToStringPretty());
+            Console.WriteLine(view.ToStringPretty());
             Console.WriteLine(projection.ToStringPretty());
-            shaderProgram.SetUniform("model", modelProj);
-            shaderProgram.SetUniform("view", viewProj);
+            shaderProgram.SetUniform("model", model);
+            shaderProgram.SetUniform("view", view);
             shaderProgram.SetUniform("projection", projection);
             /* shaderProgram.SetUniform("matrixTest", finalProj); */
-
 
             while (!Glfw.WindowShouldClose(window))
             {
