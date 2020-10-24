@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using GlBindings;
 
@@ -80,7 +81,21 @@ namespace openGlTest
                 {0,0,1,0},
                 {0,0,0,1}
             };
-            shaderProgram.SetUniform("matrixTest", transformation);
+
+            float[,] modelProj = (float[,])transformation.Clone();
+            modelProj = Matrix4x4.Transform(modelProj.FillMatrix4x4(), Quaternion.CreateFromAxisAngle(new Vector3(1, 0, 0), MathF.PI / 180f * -55.0f)).ExtractToFloatArray();
+            float[,] viewProj = (float[,])transformation.Clone();
+            viewProj = Matrix4x4.CreateTranslation(0, 0, -3).ExtractToFloatArray();
+            float[,] projection = (float[,])transformation.Clone();
+            projection = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 180f * 45f, 800f/600f, 0.1f, 100).ExtractToFloatArray();
+            Console.WriteLine(modelProj.ToStringPretty());
+            Console.WriteLine(viewProj.ToStringPretty());
+            Console.WriteLine(projection.ToStringPretty());
+            shaderProgram.SetUniform("model", modelProj);
+            shaderProgram.SetUniform("view", viewProj);
+            shaderProgram.SetUniform("projection", projection);
+            /* shaderProgram.SetUniform("matrixTest", finalProj); */
+
 
             while (!Glfw.WindowShouldClose(window))
             {
