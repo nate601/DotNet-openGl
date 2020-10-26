@@ -78,6 +78,7 @@ namespace GlBindings
         private static glActiveTexture _ActiveTexture;
         private static glUniform3fv _SetUniformFloatVector3;
         private static glUniformMatrix4fv _SetUniformMatrix4fv;
+        private static glDeleteShader _DeleteShader;
 #pragma warning enable
         #endregion internalFunctions
 
@@ -122,6 +123,7 @@ namespace GlBindings
         private delegate void glGenerateMipmap(int target);
         private delegate void glActiveTexture(int texture);
         private delegate void glUniformMatrix4fv(int location, int count, bool transpose, float[] val);
+        private delegate void glDeleteShader(uint shader);
         #endregion Delegates
 
 
@@ -369,6 +371,10 @@ namespace GlBindings
         {
             const int GL_TEXTURE0 = 0x84C0;
             _ActiveTexture(GL_TEXTURE0 + textureNumber);
+        }
+        public static void DeleteShader(uint shader)
+        {
+            _DeleteShader(shader);
         }
         #endregion ExternalFunctions
     }

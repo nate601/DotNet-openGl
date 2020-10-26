@@ -67,9 +67,9 @@ namespace openGlTest
             ebo.Bind();
             ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
 
-            // location = 0
+            // location = 0 position
             _ = vao.AddAttribute(3, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
-            // location = 1
+            // location = 1 texture map
             _ = vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
@@ -85,7 +85,6 @@ namespace openGlTest
             shaderProgram.SetUniform("model", model);
             shaderProgram.SetUniform("view", view);
             shaderProgram.SetUniform("projection", projection);
-            /* shaderProgram.SetUniform("matrixTest", finalProj); */
 
             while (!Glfw.WindowShouldClose(window))
             {
@@ -130,6 +129,8 @@ namespace openGlTest
                 Console.WriteLine($"Linking failed:\n {linkingInfolog}");
                 throw new Exception(linkingInfolog);
             }
+            vs.Delete();
+            fs.Delete();
 
             return shaderProgram;
         }

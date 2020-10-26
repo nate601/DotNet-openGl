@@ -6,6 +6,8 @@ namespace GlBindings
     {
         internal uint shaderIdentifier;
 
+        public bool isActive;
+
         internal ShaderTypes ShaderType;
 
         public string ShaderSource
@@ -59,6 +61,12 @@ namespace GlBindings
         {
             ShaderType = shaderType;
             shaderIdentifier = Gl.CreateShader((int)shaderType);
+            isActive = true;
+        }
+        public void Delete()
+        {
+            Gl.DeleteShader(shaderIdentifier);
+            isActive = false;
         }
 
         public enum ShaderTypes
