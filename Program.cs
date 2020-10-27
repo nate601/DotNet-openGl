@@ -21,7 +21,7 @@ namespace openGlTest
                 throw new Exception("Glfw has failed to successfully initialize");
             }
             Glfw.DefaultWindowHints(true);
-            Glfw.GlfwWindow window = Glfw.CreateWindow(640, 480, ".NET Core GL");
+            Glfw.GlfwWindow window = (Glfw.GlfwWindow)Glfw.CreateWindow(640, 480, ".NET Core GL");
             if (window == IntPtr.Zero)
             {
                 Console.WriteLine("Error creating context window.");
