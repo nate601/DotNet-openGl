@@ -56,29 +56,21 @@ namespace GlBindings
             WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         }
-        public class GlfwWindow : BaseIntPtrBinding
+        public class GlfwWindow
         {
-            public GlfwWindow(IntPtr windowPtr) : base(windowPtr)
+            private readonly IntPtr windowPointer;
+            public GlfwWindow(IntPtr windowptr)
             {
+                windowPointer = windowptr;
             }
-        }
-        public class BaseIntPtrBinding
-        {
-            private readonly IntPtr innerPointer;
-            public BaseIntPtrBinding(IntPtr windowPtr)
+            public static implicit operator IntPtr(GlfwWindow w)
             {
-                innerPointer = windowPtr;
+                return w.windowPointer;
             }
-
-            public static implicit operator IntPtr(BaseIntPtrBinding w)
+            public static implicit operator GlfwWindow(IntPtr i)
             {
-                return w.innerPointer;
+                return new GlfwWindow(i);
             }
-            public static implicit operator BaseIntPtrBinding(IntPtr i)
-            {
-                return new BaseIntPtrBinding(i);
-            }
-
         }
     }
 }
