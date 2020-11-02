@@ -43,7 +43,7 @@ namespace GlBindings
         public static extern void SwapBuffers(IntPtr window);
         [DllImport("glfw", EntryPoint = "glfwWindowHint")]
         public static extern void WindowHint(int target, int hint);
-        #endregion
+        #endregion functions
         public static void DefaultWindowHints(bool debug)
         {
             const int GLFW_OPENGL_DEBUG_CONTEXT = 0x00022007;
