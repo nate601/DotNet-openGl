@@ -73,7 +73,7 @@ namespace GlBindings
             Matrix4x4 trans = Matrix4x4.CreateTranslation(vec.x, vec.y, vec.z);
             return Matrix4x4.Multiply(mat, trans).ExtractToFloatArray();
         }
-        public static float[,] Transform(float[,] matArray, Vector3D vec, float rotationDegrees)
+        public static float[,] Transform(float[,] matArray, Vector3D vec, float rotationDegrees = 0)
         {
             Matrix4x4 mat = matArray.FillMatrix4x4();
             Matrix4x4 trans = Matrix4x4.Transform(mat, Quaternion.CreateFromAxisAngle(vec.ToNumerics(), Deg2Rad(rotationDegrees)));

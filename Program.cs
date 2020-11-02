@@ -75,7 +75,7 @@ namespace openGlTest
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
 
-            float[,] model = MatrixProjections.Transform(MatrixProjections.identity, new Vector3D(1, 0, 0), -55);
+            float[,] model = MatrixProjections.Transform(MatrixProjections.identity, new Vector3D(1, 0, 0), 0);
             float[,] view = MatrixProjections.Translation(new Vector3D(0, 0, -3));
             float[,] projection = MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100);
             Console.WriteLine(model.ToStringPretty());
