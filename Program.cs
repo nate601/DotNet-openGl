@@ -27,7 +27,6 @@ namespace openGlTest
                 throw new Exception("Error creating context window.");
             }
             Glfw.MakeContextCurrent(window);
-            /* Gl.LoadGl(); */
             Gl.LoadDelegates();
             Gl.Enable(0x92E0);
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
@@ -75,25 +74,42 @@ namespace openGlTest
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
 
-            float[,] model = MatrixProjections.Transform(MatrixProjections.identity, new Vector3D(1, 0, 0), 0);
-            float[,] view = MatrixProjections.Translation(new Vector3D(0, 0, -3));
-            float[,] projection = MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100);
-            Console.WriteLine(model.ToStringPretty());
-            Console.WriteLine(view.ToStringPretty());
-            Console.WriteLine(projection.ToStringPretty());
-            shaderProgram.SetUniform("model", model);
-            shaderProgram.SetUniform("view", view);
-            shaderProgram.SetUniform("projection", projection);
+            Vector3D wallPosition = new Vector3D(0, 0, 0);
+            Vector3D cameraPosition = new Vector3D(0, 0, -3);
 
+
+            float lastFrameTime = 0;
             while (!Glfw.WindowShouldClose(window))
             {
                 float time = (float)Glfw.GetTime();
+
+                float deltaTime = time - lastFrameTime;
+                lastFrameTime = time;
+                float speed = 10f / 100f;
+                /* Console.WriteLine(deltaTime); */
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
                 shaderProgram.Bind();
                 vao.Bind();
                 shaderProgram.SetUniform("time", time);
+
+                float[,] model = MatrixProjections.Transform(MatrixProjections.identity, wallPosition, 0);
+                model = MatrixProjections.Transform(model, wallPosition);
+                float[,] view = MatrixProjections.Translation(cameraPosition);
+                float[,] projection = MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100);
+                wallPosition = new Vector3D(wallPosition.x, wallPosition.y + (deltaTime * speed), wallPosition.z);
+                Console.WriteLine(wallPosition.y);
+
+
+                Console.WriteLine(model.ToStringPretty());
+                Console.WriteLine(view.ToStringPretty());
+                Console.WriteLine(projection.ToStringPretty());
+
+                shaderProgram.SetUniform("model", model);
+                shaderProgram.SetUniform("view", view);
+                shaderProgram.SetUniform("projection", projection);
+
 
                 Gl.DrawElements(0x0004, 6, 0x1405, 0);
                 Glfw.SwapBuffers(window);
