@@ -85,7 +85,7 @@ namespace openGlTest
 
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
-                float speed = 10f / 100f;
+                const float speed = 10f / 100f;
                 /* Console.WriteLine(deltaTime); */
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
@@ -100,7 +100,6 @@ namespace openGlTest
                 float[,] projection = MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100);
                 wallPosition = new Vector3D(wallPosition.x, wallPosition.y + (deltaTime * speed), wallPosition.z);
                 Console.WriteLine(wallPosition.y);
-
 
                 Console.WriteLine(model.ToStringPretty());
                 Console.WriteLine(view.ToStringPretty());
