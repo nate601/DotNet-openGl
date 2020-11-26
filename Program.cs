@@ -53,22 +53,23 @@ namespace openGlTest
             tex.GenerateMipmap();
             tex.SetActiveTexture(0);
 
-            VertexBufferObject vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
-            VertexArrayObject vao = new VertexArrayObject();
-            ElementBufferObject ebo = new ElementBufferObject();
+            BufferSet bufferSet = new BufferSet();
+            bufferSet.vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
+            bufferSet.vao = new VertexArrayObject();
+            bufferSet.ebo = new ElementBufferObject();
 
-            vao.Bind();
+            bufferSet.vao.Bind();
 
-            vbo.Bind();
-            vbo.BufferData(vertices, DrawType.GL_STATIC_DRAW);
+            bufferSet.vbo.Bind();
+            bufferSet.vbo.BufferData(vertices, DrawType.GL_STATIC_DRAW);
 
-            ebo.Bind();
-            ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
+            bufferSet.ebo.Bind();
+            bufferSet.ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
 
             // location = 0 position
-            _ = vao.AddAttribute(3, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
+            _ = bufferSet.vao.AddAttribute(3, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
             // location = 1 texture map
-            _ = vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
+            _ = bufferSet.vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
             shaderProgram.Bind();
@@ -91,7 +92,7 @@ namespace openGlTest
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
                 shaderProgram.Bind();
-                vao.Bind();
+                bufferSet.vao.Bind();
                 shaderProgram.SetUniform("time", time);
 
                 float[,] model = MatrixProjections.Transform(MatrixProjections.identity, wallPosition, 0);
