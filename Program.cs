@@ -54,22 +54,12 @@ namespace openGlTest
             tex.SetActiveTexture(0);
 
             BufferSet bufferSet = new BufferSet();
-            bufferSet.vbo = new VertexBufferObject(BufferType.GL_ARRAY_BUFFER);
-            bufferSet.vao = new VertexArrayObject();
-            bufferSet.ebo = new ElementBufferObject();
 
-            bufferSet.vao.Bind();
+            BufferSet.BufferAttribute[] bufferAttributes = new BufferSet.BufferAttribute[2];
+            bufferAttributes[0] = new BufferSet.BufferAttribute("Vertex Position", DataType.GL_FLOAT, 3);
+            bufferAttributes[1] = new BufferSet.BufferAttribute("Texture Mapping", DataType.GL_FLOAT, 2);
 
-            bufferSet.vbo.Bind();
-            bufferSet.vbo.BufferData(vertices, DrawType.GL_STATIC_DRAW);
-
-            bufferSet.ebo.Bind();
-            bufferSet.ebo.BufferData(indices, DrawType.GL_STATIC_DRAW);
-
-            // location = 0 position
-            _ = bufferSet.vao.AddAttribute(3, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
-            // location = 1 texture map
-            _ = bufferSet.vao.AddAttribute(2, DataType.GL_FLOAT, false, Marshal.SizeOf(typeof(float)) * 5);
+            bufferSet.InitializeBuffers(vertices, indices, DrawType.GL_STATIC_DRAW, bufferAttributes);
 
             ShaderProgram shaderProgram = GenerateShaderProgram();
             shaderProgram.Bind();
