@@ -72,7 +72,7 @@ namespace openGlTest
 
             Sprite ro = new Sprite(tex, shaderProgram);
             Camera cam = new Camera();
-            cam.transform.position = new Vector3D(0,0,-3);
+            cam.transform.position = new Vector3D(0, 0, -3);
             float lastFrameTime = 0;
             while (!Glfw.WindowShouldClose(window))
             {
@@ -84,8 +84,8 @@ namespace openGlTest
                 Console.WriteLine(deltaTime);
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
-                Gl.Clear(0b100000000000000 | 0b100000000);
-                ro.transform.position = new Vector3D(ro.transform.position.x + (deltaTime * speed), ro.transform.position.y, ro.transform.position.z );
+                Gl.Clear(0x4000 | 0x100);
+                ro.transform.position = new Vector3D(ro.transform.position.x + (deltaTime * speed), ro.transform.position.y, ro.transform.position.z);
                 Renderer.Render(ro, cam);
                 /* shaderProgram.Bind(); */
                 /* bufferSet.vao.Bind(); */
