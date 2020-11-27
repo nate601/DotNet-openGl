@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -79,6 +80,9 @@ namespace GlBindings
             Gl.ActiveTexture(textureId);
             Bind();
         }
-
+    }
+    public class TextureManager
+    {
+        public List<Texture> textures;
     }
 }
