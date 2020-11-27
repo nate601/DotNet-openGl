@@ -36,7 +36,6 @@
             EnableVertexAttribArray(currentAttributeCount);
             currentAttributeCount++;
             return currentAttributeCount - 1;
-
         }
 
     }
