@@ -13,11 +13,9 @@ namespace openGlTest.EngineObjects
         public BufferSet buffers;
         public ShaderProgram shader;
 
-        public Sprite(string spriteName)
+        public Sprite(Texture tex)
         {
-            tex = new Texture();
-            tex.GetTextureRGBData(spriteName);
-
+            this.tex = tex;
             BufferSet bufferSet = new BufferSet();
 
             BufferSet.BufferAttribute[] bufferAttributes = new BufferSet.BufferAttribute[2];
@@ -26,7 +24,6 @@ namespace openGlTest.EngineObjects
 
             bufferSet.InitializeBuffers(Primatives.Quad.vertices, Primatives.Quad.indices, DrawType.GL_STATIC_DRAW, bufferAttributes);
         }
-
     }
     public class Primatives
     {
@@ -49,6 +46,10 @@ namespace openGlTest.EngineObjects
     public class Transform
     {
         public Vector3D position;
+        public float[,] GetModelMatrix()
+        {
+            return MatrixProjections.Transform(MatrixProjections.identity, position);
+        }
     }
     public class Camera
     {
@@ -69,15 +70,20 @@ namespace openGlTest.EngineObjects
         {
 
         }
-        public static void Render(int shaderProgramIndex = 0)
+        public static void Render(int shaderProgramIndex = 0, Sprite renderObject = null, Camera camera = null )
         {
             var shaderProgram = shaderPrograms[shaderProgramIndex];
+            if(renderObject == null) 
+                return;
+            if(shaderProgram == null)
+                return;
+            shaderProgram.Bind();
+            renderObject.buffers.vao.Bind();
+            shaderProgram.SetUniform("model", renderObject.transform.GetModelMatrix());
+            shaderProgram.SetUniform("view", camera.transform.GetModelMatrix());
+            shaderProgram.SetUniform("projection", MatrixProjections.identity);
+            Gl.DrawElements(0x004, 6, 0x1405, 0);
 
         }
     }
-    public static class ResourceManager
-    {
-
-    }
-
 }
