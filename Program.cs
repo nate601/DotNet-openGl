@@ -80,11 +80,12 @@ namespace openGlTest
 
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
-                /* const float speed = 10f / 100f; */
-                /* Console.WriteLine(deltaTime); */
+                const float speed = 10f / 100f;
+                Console.WriteLine(deltaTime);
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0b100000000000000 | 0b100000000);
+                ro.transform.position = new Vector3D(ro.transform.position.x + (deltaTime * speed), ro.transform.position.y, ro.transform.position.z );
                 Renderer.Render(ro, cam);
                 /* shaderProgram.Bind(); */
                 /* bufferSet.vao.Bind(); */
