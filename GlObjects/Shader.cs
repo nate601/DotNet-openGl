@@ -56,6 +56,22 @@ namespace GlBindings
         {
             ShaderSource = File.ReadAllText(filePath);
         }
+        public void LoadShaderFromShaderFolder(string shaderName, ShaderTypes shaderType)
+        {
+            var filePath = $"ProjectFiles/{shaderName}/";
+            switch (shaderType)
+            {
+                case ShaderTypes.GL_VERTEX_SHADER:
+                    filePath += "Vertex_Shader.glsl";
+                    break;
+                case ShaderTypes.GL_FRAGMENT_SHADER:
+                    filePath += "Fragment_Shader.glsl";
+                    break;
+                default:
+                    break;
+            }
+            ShaderSource = File.ReadAllText(filePath);
+        }
 
         public Shader(ShaderTypes shaderType)
         {

@@ -85,7 +85,8 @@ namespace openGlTest
         private static ShaderProgram GenerateShaderProgram()
         {
             Shader vs = new Shader(Shader.ShaderTypes.GL_VERTEX_SHADER);
-            vs.LoadShaderSourceFromFile("Vertex_Shader.glsl");
+            /* vs.LoadShaderSourceFromFile("Vertex_Shader.glsl"); */
+            vs.LoadShaderFromShaderFolder("BaseShader", Shader.ShaderTypes.GL_VERTEX_SHADER);
             if (!vs.TryCompile(out string vsInfolog))
             {
                 Console.WriteLine($"Compilation failed:\n {vsInfolog}");
@@ -93,7 +94,8 @@ namespace openGlTest
             }
 
             Shader fs = new Shader(Shader.ShaderTypes.GL_FRAGMENT_SHADER);
-            fs.LoadShaderSourceFromFile("Fragment_Shader.glsl");
+            fs.LoadShaderFromShaderFolder("BaseShader", Shader.ShaderTypes.GL_FRAGMENT_SHADER);
+            /* fs.LoadShaderSourceFromFile("Fragment_Shader.glsl"); */
             if (!fs.TryCompile(out string fsInfolog))
             {
                 Console.WriteLine($"Compilation failed:\n {fsInfolog}");
