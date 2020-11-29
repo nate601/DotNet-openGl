@@ -37,38 +37,15 @@ namespace openGlTest
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
 
-            /* float[] vertices = new float[]{ */
-            /* //position location1   texture location2 */
-            /*  0.5f,  0.5f, 0.0f,  1.0f, 1.0f, // top    right */
-            /*  0.5f, -0.5f, 0.0f,  1.0f, 0.0f, // bottom right */
-            /* -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // bottom left */
-            /* -0.5f,  0.5f, 0.0f,  0.0f, 1.0f  // top    left */
-            /* }; */
-            /* int[] indices = new int[]{ */
-            /*     0, 1, 3, */
-            /*     1, 2, 3 */
-            /* }; */
 
             Texture tex = new Texture();
             tex.SetTextureData("wall.jpg");
             tex.GenerateMipmap();
             tex.SetActiveTexture(0);
 
-            /* BufferSet bufferSet = new BufferSet(); */
-
-            /* BufferSet.BufferAttribute[] bufferAttributes = new BufferSet.BufferAttribute[2]; */
-            /* bufferAttributes[0] = new BufferSet.BufferAttribute("Vertex Position", DataType.GL_FLOAT, 3); */
-            /* bufferAttributes[1] = new BufferSet.BufferAttribute("Texture Mapping", DataType.GL_FLOAT, 2); */
-
-            /* bufferSet.InitializeBuffers(vertices, indices, DrawType.GL_STATIC_DRAW, bufferAttributes); */
-
             ShaderProgram shaderProgram = GenerateShaderProgram();
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
-
-            /* Vector3D wallPosition = new Vector3D(0, 0, 0); */
-            /* Vector3D cameraPosition = new Vector3D(0, 0, -3); */
-
 
             Sprite ro = new Sprite(tex, shaderProgram);
             Camera cam = new Camera();
@@ -85,29 +62,11 @@ namespace openGlTest
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
                 Gl.Clear(0x4000 | 0x100);
+
                 ro.transform.position = new Vector3D(ro.transform.position.x + (deltaTime * speed), ro.transform.position.y, ro.transform.position.z);
+
                 Renderer.Render(ro, cam);
-                /* shaderProgram.Bind(); */
-                /* bufferSet.vao.Bind(); */
-                /* shaderProgram.SetUniform("time", time); */
 
-                /* float[,] model = MatrixProjections.Transform(MatrixProjections.identity, wallPosition, 0); */
-                /* model = MatrixProjections.Transform(model, wallPosition); */
-                /* float[,] view = MatrixProjections.Translation(cameraPosition); */
-                /* float[,] projection = MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100); */
-                /* wallPosition = new Vector3D(wallPosition.x, wallPosition.y + (deltaTime * speed), wallPosition.z); */
-                /* Console.WriteLine(wallPosition.y); */
-
-                /* Console.WriteLine(model.ToStringPretty()); */
-                /* Console.WriteLine(view.ToStringPretty()); */
-                /* Console.WriteLine(projection.ToStringPretty()); */
-
-                /* shaderProgram.SetUniform("model", model); */
-                /* shaderProgram.SetUniform("view", view); */
-                /* shaderProgram.SetUniform("projection", projection); */
-
-
-                /* Gl.DrawElements(0x0004, 6, 0x1405, 0); */
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
             }
