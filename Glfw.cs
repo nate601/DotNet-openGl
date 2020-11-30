@@ -51,10 +51,12 @@ namespace GlBindings
             const int GLFW_CONTEXT_VERSION_MINOR = 0x00022003;
             const int GLFW_OPENGL_PROFILE = 0x00022008;
             const int GLFW_OPENGL_CORE_PROFILE = 0x00032001;
+            const int GLFW_FLOATING = 0x00020007;
             WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             WindowHint(GLFW_OPENGL_DEBUG_CONTEXT, debug ? 1 : 0);
             WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            WindowHint(GLFW_FLOATING, 1);
         }
         public class GlfwWindow
         {
