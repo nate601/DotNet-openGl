@@ -1,0 +1,15 @@
+{
+    "configurations": 
+    {
+        "launch - netcoredbg": 
+        {
+            "adapter": "netcoredbg",
+            "configuration":{
+                "request":"launch",
+                "program": "${workspaceRoot}/bin/Debug/net5.0/openGlTest.dll",
+                "args": [],
+                "stopAtEntry": true
+            }
+        }
+    }
+}
