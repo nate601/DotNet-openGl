@@ -33,7 +33,7 @@ namespace openGlTest
                 const float speed = 10f / 100f;
                 Console.WriteLine(deltaTime);
 
-                Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f);
+                Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f); // #6495ED
                 Gl.Clear(0x4000 | 0x100);
 
                 testSprite.transform.position = new Vector3D(testSprite.transform.position.x + (deltaTime * speed),
