@@ -9,7 +9,7 @@ namespace openGlTest
     {
         public static int Main()
         {
-            Glfw.GlfwWindow window = InitializeEngine();
+            Glfw.GlfwWindow window = InitializeEngine(out object[] callbacks);
 
             Texture tex = new Texture();
             tex.SetTextureData("wall.jpg");
@@ -46,11 +46,16 @@ namespace openGlTest
                 Glfw.PollEvents();
             }
 
+            foreach (var callback in callbacks)
+            {
+                GC.KeepAlive(callback);
+            }
+
             Glfw.Terminate();
             return 0;
         }
 
-        private static Glfw.GlfwWindow InitializeEngine()
+        private static Glfw.GlfwWindow InitializeEngine(out object[] callbacks)
         {
             Glfw.ErrorFunc errorCallbackDelegate = GlfwErrorCallback;
             _ = Glfw.SetErrorCallback(Marshal.GetFunctionPointerForDelegate(errorCallbackDelegate));
@@ -79,6 +84,7 @@ namespace openGlTest
 
             Glfw.KeyCallback keyCallbackDelegate = KeyCallback;
             _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
+            callbacks = new object[] { (object)keyCallbackDelegate, (object)errorCallbackDelegate };
             return window;
         }
 
