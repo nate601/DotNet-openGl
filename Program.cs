@@ -49,9 +49,8 @@ namespace openGlTest
                 Renderer.subscribeToRender.Add(otherSprite);
                 Renderer.Update();
 
-                if(InputManager.GetKey(69))
+                if(InputManager.GetKeyDown(69))
                 {
-                    
                     Glfw.SetWindowShouldClose(window, 1);
                 }
 

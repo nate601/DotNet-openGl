@@ -6,7 +6,7 @@ namespace openGlTest.EngineObjects
     public static class InputManager
     {
         public static Dictionary<int, bool> mapIntDown = new Dictionary<int, bool>();
-        public static bool GetKey(int key)
+        public static bool GetKeyDown(int key)
         {
             if(mapIntDown.ContainsKey(key))
             {
