@@ -43,6 +43,8 @@ namespace GlBindings
         public static extern void SwapBuffers(IntPtr window);
         [DllImport("glfw", EntryPoint = "glfwWindowHint")]
         public static extern void WindowHint(int target, int hint);
+        [DllImport("glfw", EntryPoint = "glfwGetKey")]
+        public static extern int GetKey(IntPtr window, int key);
         #endregion functions
         public static void DefaultWindowHints(bool debug)
         {

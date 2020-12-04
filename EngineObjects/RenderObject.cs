@@ -73,10 +73,39 @@ namespace openGlTest.EngineObjects
     public class CameraControls
     {
         public Camera cam;
+        public float movementSpeed;
 
-        public CameraControls(Camera cam)
+        public CameraControls(Camera cam, float movementSpeed)
         {
             this.cam = cam;
+            this.movementSpeed = movementSpeed;
+        }
+
+        public void Update(float deltaTime)
+        {
+            var newMovement = new Vector3(0,0,0);
+            if(InputManager.GetKeyDown(87)) // W
+            {
+                /* newMovement = new Vector3(newMovement.x, newMovement.y + (movementSpeed * deltaTime ), 0); */
+                newMovement -= new Vector3(0, movementSpeed * deltaTime, 0);
+            }
+            if(InputManager.GetKeyDown(65)) // A
+            {
+                /* newMovement = new Vector3D(newMovement.x - (movementSpeed * deltaTime), newMovement.y, 0); */
+                newMovement += new Vector3(movementSpeed * deltaTime, 0, 0);
+            }
+            if(InputManager.GetKeyDown(68)) // D
+            {
+                /* newMovement = new Vector3D(newMovement.x + (movementSpeed * deltaTime), newMovement.y, 0); */
+                newMovement -= new Vector3(movementSpeed * deltaTime, 0, 0);
+            }
+            if(InputManager.GetKeyDown(83)) // S
+            {
+                /* newMovement = new Vector3D(newMovement.x, newMovement.y - (movementSpeed * deltaTime ), 0); */
+                newMovement += new Vector3(0, movementSpeed * deltaTime, 0);
+            }
+            cam.transform.position = cam.transform.position + newMovement;
+            
         }
     }
 }
