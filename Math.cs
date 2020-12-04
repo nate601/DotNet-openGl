@@ -29,10 +29,11 @@ namespace GlBindings
     public struct Vector3D
     {
         public readonly float x, y, z;
-        public static implicit operator Vector3(Vector3D vec)
+        public static implicit operator Vector3D(Vector3 vec)
         {
-            return new Vector3(vec.x, vec.y, vec.z);
+            return new Vector3D(vec.X, vec.Y, vec.Z);
         }
+
         public Vector3D(float x, float y, float z)
         {
             this.x = x;
