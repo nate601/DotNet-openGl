@@ -81,9 +81,10 @@ namespace openGlTest.EngineObjects
         {
             var shaderProgram = renderObject.shader;
             shaderProgram.Bind();
+            renderObject.tex.SetActiveTexture(0);
             renderObject.buffers.vao.Bind();
-            Console.WriteLine(renderObject.transform.GetModelMatrix().ToStringPretty());
-            Console.WriteLine(camera.transform.GetModelMatrix().ToStringPretty());
+            /* Console.WriteLine(renderObject.transform.GetModelMatrix().ToStringPretty()); */
+            /* Console.WriteLine(camera.transform.GetModelMatrix().ToStringPretty()); */
             shaderProgram.SetUniform("model", renderObject.transform.GetModelMatrix());
             shaderProgram.SetUniform("view", camera.transform.GetModelMatrix());
             shaderProgram.SetUniform("projection", MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100));

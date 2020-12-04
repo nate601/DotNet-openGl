@@ -23,6 +23,8 @@ namespace openGlTest
             Sprite testSprite = new Sprite(tex, shaderProgram);
             Camera camera = new Camera();
             camera.transform.position = new Vector3D(0, 0, -3);
+
+            Sprite otherSprite = new Sprite(tex, shaderProgram);
             float lastFrameTime = 0;
             while (!Glfw.WindowShouldClose(window))
             {
@@ -31,16 +33,17 @@ namespace openGlTest
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
                 const float speed = 10f / 100f;
-                Console.WriteLine(deltaTime);
+                Console.WriteLine(MathF.Round(1f/deltaTime));
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f); // #6495ED
                 Gl.Clear(0x4000 | 0x100);
 
                 testSprite.transform.position = new Vector3D(testSprite.transform.position.x + (deltaTime * speed),
-                                                     testSprite.transform.position.y,
-                                                     testSprite.transform.position.z);
+                                                             testSprite.transform.position.y,
+                                                             testSprite.transform.position.z);
 
                 Renderer.Render(testSprite, camera);
+                Renderer.Render(otherSprite, camera);
 
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
