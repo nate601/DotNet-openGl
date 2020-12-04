@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
+using GameGrid;
 using GlBindings;
 using openGlTest.EngineObjects;
 
@@ -22,35 +24,37 @@ namespace openGlTest
 
             Sprite testSprite = new Sprite(tex, shaderProgram);
             Camera camera = new Camera();
-            CameraControls camCon = new CameraControls(camera);
-            camera.transform.position = new Vector3D(0, 0, -3);
+            CameraControls camCon = new CameraControls(camera, (100f/100f));
+            camera.transform.position = new Vector3(0, 0, -3);
+
+            Grid grid = new Grid();
 
             Sprite otherSprite = new Sprite(tex, shaderProgram);
             float lastFrameTime = 0;
+            Renderer.subscribeToRender.Add(otherSprite);
             while (!Glfw.WindowShouldClose(window))
             {
                 float time = (float)Glfw.GetTime();
 
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
-                const float speed = 10f / 100f;
+                /* const float speed = 10f / 100f; */
                 Console.WriteLine(MathF.Round(1f/deltaTime));
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f); // #6495ED
                 Gl.Clear(0x4000 | 0x100);
 
-                testSprite.transform.position = new Vector3D(testSprite.transform.position.x + (deltaTime * speed),
-                                                             testSprite.transform.position.y,
-                                                             testSprite.transform.position.z);
-
-                Renderer.subscribeToRender.Add(testSprite);
-                Renderer.subscribeToRender.Add(otherSprite);
-                Renderer.Update();
+                /* testSprite.transform.position = (testSprite.transform.position + new Vector3(deltaTime*speed, 0, 0)); */
 
                 if(InputManager.GetKeyDown(69))
                 {
                     Glfw.SetWindowShouldClose(window, 1);
                 }
+
+                camCon.Update(deltaTime);
+
+                /* Renderer.subscribeToRender.Add(testSprite); */
+                Renderer.Update();
 
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();

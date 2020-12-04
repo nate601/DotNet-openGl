@@ -1,3 +1,5 @@
+using System;
+using System.Numerics;
 using GlBindings;
 
 namespace openGlTest.EngineObjects
@@ -45,14 +47,14 @@ namespace openGlTest.EngineObjects
 
     public class Transform
     {
-        public Vector3D position;
+        public Vector3 position;
         public float[,] GetModelMatrix()
         {
             return MatrixProjections.Translation(position);
         }
         public Transform()
         {
-            position = new Vector3D(0, 0, 0);
+            position = new Vector3(0, 0, 0);
         }
     }
     public class Camera
