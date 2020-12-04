@@ -22,6 +22,7 @@ namespace openGlTest
 
             Sprite testSprite = new Sprite(tex, shaderProgram);
             Camera camera = new Camera();
+            CameraControls camCon = new CameraControls(camera);
             camera.transform.position = new Vector3D(0, 0, -3);
 
             Sprite otherSprite = new Sprite(tex, shaderProgram);
@@ -35,6 +36,8 @@ namespace openGlTest
                 const float speed = 10f / 100f;
                 Console.WriteLine(MathF.Round(1f/deltaTime));
 
+                
+
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f); // #6495ED
                 Gl.Clear(0x4000 | 0x100);
 
@@ -45,6 +48,12 @@ namespace openGlTest
                 Renderer.subscribeToRender.Add(testSprite);
                 Renderer.subscribeToRender.Add(otherSprite);
                 Renderer.Update();
+
+                if(InputManager.GetKey(69))
+                {
+                    
+                    Glfw.SetWindowShouldClose(window, 1);
+                }
 
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
@@ -134,11 +143,7 @@ namespace openGlTest
         }
         public static void KeyCallback(IntPtr window, int key, int scancode, int action, int modifiers)
         {
-            //Console.WriteLine($"Key: {key} , Action: {action}");
-            if (key == 69 && action == 1)
-            {
-                Glfw.SetWindowShouldClose(window, 1);
-            }
+            InputManager.KeyEvent(window, key, scancode, action, modifiers);
         }
     }
 }
