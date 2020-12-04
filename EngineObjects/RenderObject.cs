@@ -63,7 +63,7 @@ namespace openGlTest.EngineObjects
         public Transform transform;
         public Camera()
         {
-            if (mainCamera is null)
+            if (mainCamera == null)
             {
                 mainCamera = this;
             }
@@ -73,6 +73,7 @@ namespace openGlTest.EngineObjects
     public static class Renderer
     {
         public static List<ShaderProgram> shaderPrograms = new List<ShaderProgram>();
+        public static List<Sprite> subscribeToRender = new List<Sprite>();
         public static void EndScene()
         {
 
@@ -89,7 +90,13 @@ namespace openGlTest.EngineObjects
             shaderProgram.SetUniform("view", camera.transform.GetModelMatrix());
             shaderProgram.SetUniform("projection", MatrixProjections.GetPerspectiveProjection(45, 640, 480, 0.1f, 100));
             Gl.DrawElements(0x004, 6, 0x1405, 0);
-
+        }
+        public static void Update()
+        {
+            foreach (var entry in subscribeToRender)
+            {
+               Render(entry, Camera.mainCamera);
+            }
         }
     }
 }

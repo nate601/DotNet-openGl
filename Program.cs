@@ -42,8 +42,9 @@ namespace openGlTest
                                                              testSprite.transform.position.y,
                                                              testSprite.transform.position.z);
 
-                Renderer.Render(testSprite, camera);
-                Renderer.Render(otherSprite, camera);
+                Renderer.subscribeToRender.Add(testSprite);
+                Renderer.subscribeToRender.Add(otherSprite);
+                Renderer.Update();
 
                 Glfw.SwapBuffers(window);
                 Glfw.PollEvents();
