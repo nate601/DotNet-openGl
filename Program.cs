@@ -9,9 +9,10 @@ namespace openGlTest
 {
     public static class Program
     {
+        internal static Glfw.GlfwWindow window;
         public static int Main()
         {
-            Glfw.GlfwWindow window = InitializeEngine(out object[] callbacks);
+            window = InitializeEngine(out object[] callbacks);
 
             Texture tex = new Texture();
             tex.SetTextureData("wall.jpg");
