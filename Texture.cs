@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace GlBindings
@@ -9,17 +10,19 @@ namespace GlBindings
     public class Texture : BaseBindable<Texture>
     {
         private readonly int identifier;
+        public readonly string textureName;
         public override void Bind()
         {
             CurrentlyBound = this;
             Gl.BindTexture(0x0DE1, identifier);
 
         }
-        public Texture()
+        public Texture(string textureName)
         {
             identifier = Gl.GenTextures();
+            this.textureName = textureName;
         }
-        public byte[] GetTextureRGBData(Bitmap image)
+        private byte[] GetTextureRGBData(Bitmap image)
         {
             byte[] texData = new byte[image.Width * image.Height * 3];
             for (int x = 0; x < image.Width; x++)
@@ -34,7 +37,7 @@ namespace GlBindings
             }
             return texData;
         }
-        public byte[] GetTextureRGBData(string image)
+        private byte[] GetTextureRGBData(string image)
         {
             using Bitmap bp = (Bitmap)Image.FromFile(image);
             return GetTextureRGBData(bp);
@@ -58,7 +61,10 @@ namespace GlBindings
             Bind();
             IntPtr dataPointer = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(byte)) * data.Length);
             Marshal.Copy(data, 0, dataPointer, data.Length);
+            Gl.TexParameter(0x0DE1, 0x2801, 0x2600);
+            Gl.TexParameter(0x0DE1, 0x2800, 0x2600);
             Gl.TexImage2D(0x0DE1, 0, 0x1907, width, height, 0, 0x1907, 0x1401, dataPointer);
+
             Marshal.FreeHGlobal(dataPointer);
         }
         public void SetTextureData(Bitmap bp)
@@ -81,8 +87,27 @@ namespace GlBindings
             Bind();
         }
     }
-    public class TextureManager
+    public static class TextureManager
     {
-        public List<Texture> textures;
+        public static List<Texture> textures = new List<Texture>();
+        public static Texture GetTexture(string textureName)
+        {
+            if (textures.Any((x) => x.textureName == textureName))
+            {
+                return textures.First(x => x.textureName == textureName);
+            }
+            var newTex = new Texture(textureName);
+            try
+            {
+                newTex.SetTextureData(textureName);
+                newTex.GenerateMipmap();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"No texture file found for {textureName}" + e.Message);
+            }
+            textures.Add(newTex);
+            return newTex;
+        }
     }
 }

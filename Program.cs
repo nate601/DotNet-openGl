@@ -10,29 +10,30 @@ namespace openGlTest
     public static class Program
     {
         internal static Glfw.GlfwWindow window;
+        internal static ShaderProgram shaderProgram;
         public static int Main()
         {
             window = InitializeEngine(out object[] callbacks);
 
-            Texture tex = new Texture();
-            tex.SetTextureData("wall.jpg");
-            tex.GenerateMipmap();
-            tex.SetActiveTexture(0);
+            /* Texture tex = new Texture("wall"); */
+            /* tex.SetTextureData("wall.jpg"); */
+            /* tex.GenerateMipmap(); */
+            /* tex.SetActiveTexture(0); */
+            Texture tex = TextureManager.GetTexture("wall.jpg");
 
-            ShaderProgram shaderProgram = GenerateShaderProgram();
+            shaderProgram = GenerateShaderProgram();
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
 
             Sprite testSprite = new Sprite(tex, shaderProgram);
             Camera camera = new Camera();
-            CameraControls camCon = new CameraControls(camera, (100f/100f));
+            CameraControls camCon = new CameraControls(camera, (100f / 100f));
             camera.transform.position = new Vector3(0, 0, -3);
 
             Grid grid = new Grid();
+            grid.Start();
 
-            Sprite otherSprite = new Sprite(tex, shaderProgram);
             float lastFrameTime = 0;
-            Renderer.subscribeToRender.Add(otherSprite);
             while (!Glfw.WindowShouldClose(window))
             {
                 float time = (float)Glfw.GetTime();
@@ -40,19 +41,21 @@ namespace openGlTest
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
                 /* const float speed = 10f / 100f; */
-                Console.WriteLine(MathF.Round(1f/deltaTime));
+                Console.WriteLine(MathF.Round(1f / deltaTime));
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f); // #6495ED
                 Gl.Clear(0x4000 | 0x100);
 
                 /* testSprite.transform.position = (testSprite.transform.position + new Vector3(deltaTime*speed, 0, 0)); */
 
-                if(InputManager.GetKeyDown(69))
+                if (InputManager.GetKeyDown(69))
                 {
                     Glfw.SetWindowShouldClose(window, 1);
                 }
 
                 camCon.Update(deltaTime);
+
+                grid.Update();
 
                 /* Renderer.subscribeToRender.Add(testSprite); */
                 Renderer.Update();

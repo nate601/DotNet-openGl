@@ -74,6 +74,7 @@ namespace openGlTest.EngineObjects
     {
         public Camera cam;
         public float movementSpeed;
+        public float multiplier = 1;
 
         public CameraControls(Camera cam, float movementSpeed)
         {
@@ -84,25 +85,37 @@ namespace openGlTest.EngineObjects
         public void Update(float deltaTime)
         {
             var newMovement = new Vector3(0,0,0);
+            if(InputManager.GetKeyDown(340))  // LEFT SHIFT
+            {
+                multiplier = 2.8f;
+            }
+            else
+            {
+                multiplier = 1.8f;
+            }
             if(InputManager.GetKeyDown(87)) // W
             {
-                /* newMovement = new Vector3(newMovement.x, newMovement.y + (movementSpeed * deltaTime ), 0); */
-                newMovement -= new Vector3(0, movementSpeed * deltaTime, 0);
+                newMovement -= new Vector3(0, movementSpeed * deltaTime * multiplier, 0);
             }
             if(InputManager.GetKeyDown(65)) // A
             {
-                /* newMovement = new Vector3D(newMovement.x - (movementSpeed * deltaTime), newMovement.y, 0); */
-                newMovement += new Vector3(movementSpeed * deltaTime, 0, 0);
+                newMovement += new Vector3(movementSpeed * deltaTime * multiplier, 0, 0);
             }
             if(InputManager.GetKeyDown(68)) // D
             {
-                /* newMovement = new Vector3D(newMovement.x + (movementSpeed * deltaTime), newMovement.y, 0); */
-                newMovement -= new Vector3(movementSpeed * deltaTime, 0, 0);
+                newMovement -= new Vector3(movementSpeed * deltaTime * multiplier, 0, 0);
             }
             if(InputManager.GetKeyDown(83)) // S
             {
-                /* newMovement = new Vector3D(newMovement.x, newMovement.y - (movementSpeed * deltaTime ), 0); */
-                newMovement += new Vector3(0, movementSpeed * deltaTime, 0);
+                newMovement += new Vector3(0, movementSpeed * deltaTime * multiplier, 0);
+            }
+            if(InputManager.GetKeyDown(81)) // Q
+            {
+                newMovement += new Vector3(0,0,movementSpeed * deltaTime * multiplier);
+            }
+            if(InputManager.GetKeyDown(90)) // Z
+            {
+                newMovement -= new Vector3(0,0,movementSpeed* deltaTime * multiplier);
             }
             cam.transform.position = cam.transform.position + newMovement;
             

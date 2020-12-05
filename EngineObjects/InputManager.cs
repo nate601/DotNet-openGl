@@ -17,19 +17,9 @@ namespace openGlTest.EngineObjects
         }
         public static void KeyEvent(IntPtr window, int key, int scancode, int action, int modifiers)
         {
-            /* mapIntDown.Clear(); */
-            /* if (mapIntDown.ContainsKey(key) && action == 1) */
-            /* { */
-            /*     mapIntDown[key] = true; */
-            /* } */
-            /* else */
-            /* { */
-            /*     mapIntDown.Add(key, true); */
-            /* } */
         }
         public static void Update()
         {
-            /* mapIntDown.Clear(); */
         }
     }
 }

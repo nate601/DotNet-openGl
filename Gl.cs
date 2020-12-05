@@ -125,7 +125,7 @@ namespace GlBindings
         private delegate void glActiveTexture(int texture);
         private delegate void glUniformMatrix4fv(int location, int count, bool transpose, float[] val);
         private delegate void glDeleteShader(uint shader);
-        private delegate void glTexParameteri(int target, int pname, int param)
+        private delegate void glTexParameteri(int target, int pname, int param);
         #endregion Delegates
 
 
