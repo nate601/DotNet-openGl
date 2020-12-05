@@ -79,6 +79,7 @@ namespace GlBindings
         private static glUniform3fv _SetUniformFloatVector3;
         private static glUniformMatrix4fv _SetUniformMatrix4fv;
         private static glDeleteShader _DeleteShader;
+        private static glTexParameteri _TexParameter;
 #pragma warning enable
         #endregion internalFunctions
 
@@ -124,6 +125,7 @@ namespace GlBindings
         private delegate void glActiveTexture(int texture);
         private delegate void glUniformMatrix4fv(int location, int count, bool transpose, float[] val);
         private delegate void glDeleteShader(uint shader);
+        private delegate void glTexParameteri(int target, int pname, int param)
         #endregion Delegates
 
 
@@ -375,6 +377,10 @@ namespace GlBindings
         public static void DeleteShader(uint shader)
         {
             _DeleteShader(shader);
+        }
+        public static void TexParameter(int target, int pname, int param)
+        {
+            _TexParameter(target, pname, param);
         }
         #endregion ExternalFunctions
     }
