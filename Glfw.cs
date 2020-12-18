@@ -45,6 +45,8 @@ namespace GlBindings
         public static extern void WindowHint(int target, int hint);
         [DllImport("glfw", EntryPoint = "glfwGetKey")]
         public static extern int GetKey(IntPtr window, int key);
+        [DllImport("glfw", EntryPoint = "glfwGetCursorPos")]
+        public static extern void GetCursorPos(IntPtr window, out double xpos, out double ypos);
         #endregion functions
         public static void DefaultWindowHints(bool debug)
         {

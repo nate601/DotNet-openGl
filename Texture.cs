@@ -9,12 +9,17 @@ namespace GlBindings
 {
     public class Texture : BaseBindable<Texture>
     {
+        private const int GL_TEXTURE_2D = 0x0DE1;
+        private const int GL_TEXTURE_MIN_FILTER = 0x2801;
+        private const int GL_LINEAR = 0x2600;
+        private const int GL_TEXTURE_MAG_FILTER = 0x2800;
+
         private readonly int identifier;
         public readonly string textureName;
         public override void Bind()
         {
             CurrentlyBound = this;
-            Gl.BindTexture(0x0DE1, identifier);
+            Gl.BindTexture(GL_TEXTURE_2D, identifier);
 
         }
         public Texture(string textureName)
@@ -61,10 +66,9 @@ namespace GlBindings
             Bind();
             IntPtr dataPointer = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(byte)) * data.Length);
             Marshal.Copy(data, 0, dataPointer, data.Length);
-            Gl.TexParameter(0x0DE1, 0x2801, 0x2600);
-            Gl.TexParameter(0x0DE1, 0x2800, 0x2600);
-            Gl.TexImage2D(0x0DE1, 0, 0x1907, width, height, 0, 0x1907, 0x1401, dataPointer);
-
+            Gl.TexParameter(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            Gl.TexParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            Gl.TexImage2D(GL_TEXTURE_2D, 0, 0x1907, width, height, 0, 0x1907, 0x1401, dataPointer);
             Marshal.FreeHGlobal(dataPointer);
         }
         public void SetTextureData(Bitmap bp)
@@ -79,7 +83,7 @@ namespace GlBindings
         public void GenerateMipmap()
         {
             Bind();
-            Gl.GenerateMipmap(0x0DE1);
+            Gl.GenerateMipmap(GL_TEXTURE_2D);
         }
         public void SetActiveTexture(int textureId)
         {

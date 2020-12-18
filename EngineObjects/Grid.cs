@@ -9,6 +9,7 @@ namespace GameGrid
     public class Grid
     {
         public Land[,] gridObjects = new Land[20, 20];
+        public Vector2 selector = new Vector2(0,0);
 
         internal void Start()
         {
