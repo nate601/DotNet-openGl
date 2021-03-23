@@ -11,6 +11,7 @@ namespace openGlTest
     {
         internal static Glfw.GlfwWindow window;
         internal static ShaderProgram shaderProgram;
+        internal static Action<float> Update;
         public static int Main()
         {
             window = InitializeEngine(out object[] callbacks);
@@ -40,24 +41,20 @@ namespace openGlTest
 
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
-                /* const float speed = 10f / 100f; */
+
                 Console.WriteLine(MathF.Round(1f / deltaTime));
 
                 Gl.ClearColor(0.392f, 0.584f, 0.929f, 1.0f); // #6495ED
                 Gl.Clear(0x4000 | 0x100);
 
-                /* testSprite.transform.position = (testSprite.transform.position + new Vector3(deltaTime*speed, 0, 0)); */
 
                 if (InputManager.GetKeyDown(69))
                 {
                     Glfw.SetWindowShouldClose(window, 1);
                 }
 
-                camCon.Update(deltaTime);
+                Update?.Invoke(deltaTime);
 
-                grid.Update();
-
-                /* Renderer.subscribeToRender.Add(testSprite); */
                 Renderer.Update();
 
                 Glfw.SwapBuffers(window);

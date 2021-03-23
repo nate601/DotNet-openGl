@@ -80,6 +80,7 @@ namespace openGlTest.EngineObjects
         {
             this.cam = cam;
             this.movementSpeed = movementSpeed;
+            Program.Update += Update;
         }
 
         public void Update(float deltaTime)
