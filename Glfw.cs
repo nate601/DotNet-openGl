@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using openGlTest.EngineObjects;
 
 namespace GlBindings
 {
@@ -12,6 +13,50 @@ namespace GlBindings
         public delegate void KeyCallback(IntPtr window, int key, int scanCode, int action, int mods);
         #endregion
 
+        public static void GlfwErrorCallback(int errorCode, string description)
+        {
+            Console.WriteLine($"GLFW ERROR:{errorCode} : {description}");
+        }
+        public static Glfw.GlfwWindow InitializeEngine(out object[] callbacks, int Width = 640, int Height = 480)
+        {
+            Glfw.ErrorFunc errorCallbackDelegate = GlfwErrorCallback;
+            _ = Glfw.SetErrorCallback(Marshal.GetFunctionPointerForDelegate(errorCallbackDelegate));
+            if (Glfw.Init())
+            {
+                Console.WriteLine("Glfw has successfully initialized");
+            }
+            else
+            {
+                Console.WriteLine("Glfw has failed to successfully initialize");
+                throw new Exception("Glfw has failed to successfully initialize");
+            }
+            Glfw.DefaultWindowHints(true);
+            Glfw.GlfwWindow window = Glfw.CreateWindow(Width, Height, ".NET Core GL");
+            if (window == IntPtr.Zero)
+            {
+                Console.WriteLine("Error creating context window.");
+                throw new Exception("Error creating context window.");
+            }
+            Glfw.MakeContextCurrent(window);
+            Gl.LoadDelegates();
+            Gl.Enable(0x92E0);
+            Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
+            Gl.SetViewport(0, 0, Width, Height);
+            Gl.DebugMessageCallback(glErrorCallbackDelegate);
+
+            Glfw.KeyCallback keyCallbackDelegate = KeyCallbackHandler;
+            _ = Glfw.SetKeyCallback(window, Marshal.GetFunctionPointerForDelegate(keyCallbackDelegate));
+            callbacks = new object[] { (object)keyCallbackDelegate, (object)errorCallbackDelegate };
+            return window;
+        }
+        public static void GlErrorCallback(int source, int type, int id, int severity, int length, string message, IntPtr userParam)
+        {
+            Console.WriteLine("GL ERROR: " + message);
+        }
+        public static void KeyCallbackHandler(IntPtr window, int key, int scancode, int action, int modifiers)
+        {
+            InputManager.KeyEvent(window, key, scancode, action, modifiers);
+        }
         #region functions
         [DllImport("glfw", EntryPoint = "glfwInit")]
         public static extern bool Init();
