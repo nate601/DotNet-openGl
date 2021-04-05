@@ -20,12 +20,14 @@ namespace openGlTest
             /* tex.GenerateMipmap(); */
             /* tex.SetActiveTexture(0); */
             Texture tex = TextureManager.GetTexture("wall.jpg");
+            Texture tex2 = TextureManager.GetTexture("land_barren.png");
 
             shaderProgram = GenerateShaderProgram();
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
 
             Sprite testSprite = new Sprite(tex, shaderProgram);
+            Renderer.subscribeToRender.Add(testSprite);
             Camera camera = new Camera();
             CameraControls camCon = new CameraControls(camera, (100f / 100f));
             camera.transform.position = new Vector3(0, 0, -3);
@@ -40,6 +42,9 @@ namespace openGlTest
 
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
+                testSprite.transform.position = testSprite.transform.position + new Vector3(0, deltaTime, 0);
+
+
 
                 Console.WriteLine(MathF.Round(1f / deltaTime));
 
@@ -50,6 +55,10 @@ namespace openGlTest
                 if (InputManager.GetKeyDown(69))
                 {
                     Glfw.SetWindowShouldClose(window, 1);
+                }
+                if (InputManager.GetKeyDown(72)) // H
+                {
+                    testSprite.tex = tex2;
                 }
 
                 Update?.Invoke(deltaTime);
