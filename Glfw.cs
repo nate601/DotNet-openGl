@@ -40,6 +40,7 @@ namespace GlBindings
             Glfw.MakeContextCurrent(window);
             Gl.LoadDelegates();
             Gl.Enable(0x92E0);
+            Gl.Enable(0x0B71); //Enable depth test
             Gl.GlErrorCallbackDelegate glErrorCallbackDelegate = GlErrorCallback;
             Gl.SetViewport(0, 0, Width, Height);
             Gl.DebugMessageCallback(glErrorCallbackDelegate);

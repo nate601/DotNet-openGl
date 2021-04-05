@@ -27,6 +27,7 @@ namespace openGlTest
             shaderProgram.SetUniform("tex", 0);
 
             Sprite testSprite = new Sprite(tex, shaderProgram);
+            testSprite.transform.position = new Vector3(0,0,1);
             Renderer.subscribeToRender.Add(testSprite);
             Camera camera = new Camera();
             CameraControls camCon = new CameraControls(camera, (100f / 100f));
@@ -42,7 +43,7 @@ namespace openGlTest
 
                 float deltaTime = time - lastFrameTime;
                 lastFrameTime = time;
-                testSprite.transform.position = testSprite.transform.position + new Vector3(0, deltaTime, 0);
+                /* testSprite.transform.position = testSprite.transform.position + new Vector3(0, deltaTime, 0); */
 
 
 
