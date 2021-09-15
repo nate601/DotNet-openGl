@@ -28,13 +28,11 @@ namespace openGlTest
 
             Sprite testSprite = new Sprite(tex, shaderProgram);
             testSprite.transform.position = new Vector3(0,0,1);
-            Renderer.subscribeToRender.Add(testSprite);
+
             Camera camera = new Camera();
             CameraControls camCon = new CameraControls(camera, (100f / 100f));
-            camera.transform.position = new Vector3(0, 0, -3);
 
-            Grid grid = new Grid();
-            grid.Start();
+            camera.transform.position = new Vector3(0, 0, -3);
 
             float lastFrameTime = 0;
             while (!Glfw.WindowShouldClose(window))
