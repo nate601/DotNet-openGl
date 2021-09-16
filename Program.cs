@@ -26,8 +26,9 @@ namespace openGlTest
             shaderProgram.Bind();
             shaderProgram.SetUniform("tex", 0);
 
-            Sprite testSprite = new Sprite(tex, shaderProgram);
+            Sprite testSprite = new Sprite(tex2, shaderProgram);
             testSprite.transform.position = new Vector3(0,0,1);
+            Renderer.subscribeToRender.Add(testSprite);
 
             Camera camera = new Camera();
             CameraControls camCon = new CameraControls(camera, (100f / 100f));
