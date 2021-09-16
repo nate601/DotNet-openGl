@@ -15,14 +15,15 @@ namespace openGlTest.EngineObjects
         }
         public static void Render(Sprite renderObject, Camera camera)
         {
-            renderObject.shader.Bind();
-            renderObject.tex.SetActiveTexture(0);
-            renderObject.buffers.vao.Bind();
-            renderObject.shader.SetUniform("model", renderObject.transform.GetModelMatrix());
-            renderObject.shader.SetUniform("view", camera.transform.GetModelMatrix());
-            /* renderObject.shader.SetUniform("projection", perspectiveProjection); */
-            renderObject.shader.SetUniform("projection", MatrixProjections.GetOrthoProjection(640f / 480f, 1, 0, 5));
-            Gl.DrawElements(0x004, 6, 0x1405, 0);
+            /* renderObject.shader.Bind(); */
+            /* renderObject.tex.SetActiveTexture(0); */
+            /* renderObject.buffers.vao.Bind(); */
+            /* renderObject.shader.SetUniform("model", renderObject.transform.GetModelMatrix()); */
+            /* renderObject.shader.SetUniform("view", camera.transform.GetModelMatrix()); */
+            /* /1* renderObject.shader.SetUniform("projection", perspectiveProjection); *1/ */
+            /* renderObject.shader.SetUniform("projection", MatrixProjections.GetOrthoProjection(640f / 480f, 1, 0, 5)); // Aspect ratio correction? */
+            /* Gl.DrawElements(0x004, 6, 0x1405, 0); */
+            renderObject.Render();
         }
         public static void Update()
         {

@@ -4,9 +4,11 @@ using GlBindings;
 
 namespace openGlTest.EngineObjects
 {
-    public class RenderObject
+    public abstract class RenderObject
     {
         public Transform transform;
+        public abstract void Render(Camera camera, float[,] projectionMatrix);
+
     }
     public class Sprite : RenderObject
     {
@@ -25,6 +27,34 @@ namespace openGlTest.EngineObjects
             bufferAttributes[1] = new BufferSet.BufferAttribute("Texture Mapping", DataType.GL_FLOAT, 2);
 
             buffers.InitializeBuffers(Primatives.Quad.vertices, Primatives.Quad.indices, DrawType.GL_STATIC_DRAW, bufferAttributes);
+        }
+
+        public override void Render(Camera camera = null, float[,] projectionMatrix = null)
+        {
+            if (camera is null)
+            {
+                if (Camera.mainCamera != null)
+                {
+                    camera = Camera.mainCamera;
+                }
+                else
+                {
+                    throw new Exception("No camera set!");
+                }
+            }
+
+            if (projectionMatrix is null)
+            {
+                projectionMatrix = MatrixProjections.GetOrthoProjection(640f/480f, 1, 0, 5);
+            }
+
+            shader.Bind();
+            tex.SetActiveTexture(0);
+            buffers.vao.Bind();
+            shader.SetUniform("model", transform.GetModelMatrix() );
+            shader.SetUniform("view", camera.transform.GetModelMatrix());
+            shader.SetUniform("projection", projectionMatrix);
+            Gl.DrawElements(0x004, 6, 0x1405, 0);
         }
     }
     public class Primatives
@@ -85,8 +115,8 @@ namespace openGlTest.EngineObjects
 
         public void Update(float deltaTime)
         {
-            var newMovement = new Vector3(0,0,0);
-            if(InputManager.GetKeyDown(340))  // LEFT SHIFT
+            var newMovement = new Vector3(0, 0, 0);
+            if (InputManager.GetKeyDown(340))  // LEFT SHIFT
             {
                 multiplier = 2.8f;
             }
@@ -94,32 +124,32 @@ namespace openGlTest.EngineObjects
             {
                 multiplier = 1.8f;
             }
-            if(InputManager.GetKeyDown(87)) // W
+            if (InputManager.GetKeyDown(87)) // W
             {
                 newMovement -= new Vector3(0, movementSpeed * deltaTime * multiplier, 0);
             }
-            if(InputManager.GetKeyDown(65)) // A
+            if (InputManager.GetKeyDown(65)) // A
             {
                 newMovement += new Vector3(movementSpeed * deltaTime * multiplier, 0, 0);
             }
-            if(InputManager.GetKeyDown(68)) // D
+            if (InputManager.GetKeyDown(68)) // D
             {
                 newMovement -= new Vector3(movementSpeed * deltaTime * multiplier, 0, 0);
             }
-            if(InputManager.GetKeyDown(83)) // S
+            if (InputManager.GetKeyDown(83)) // S
             {
                 newMovement += new Vector3(0, movementSpeed * deltaTime * multiplier, 0);
             }
-            if(InputManager.GetKeyDown(81)) // Q
+            if (InputManager.GetKeyDown(81)) // Q
             {
-                newMovement += new Vector3(0,0,movementSpeed * deltaTime * multiplier);
+                newMovement += new Vector3(0, 0, movementSpeed * deltaTime * multiplier);
             }
-            if(InputManager.GetKeyDown(90)) // Z
+            if (InputManager.GetKeyDown(90)) // Z
             {
-                newMovement -= new Vector3(0,0,movementSpeed* deltaTime * multiplier);
+                newMovement -= new Vector3(0, 0, movementSpeed * deltaTime * multiplier);
             }
             cam.transform.position = cam.transform.position + newMovement;
-            
+
         }
     }
 }
