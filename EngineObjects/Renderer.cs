@@ -21,7 +21,7 @@ namespace openGlTest.EngineObjects
             renderObject.shader.SetUniform("model", renderObject.transform.GetModelMatrix());
             renderObject.shader.SetUniform("view", camera.transform.GetModelMatrix());
             /* renderObject.shader.SetUniform("projection", perspectiveProjection); */
-            renderObject.shader.SetUniform("projection", orthoProjection);
+            renderObject.shader.SetUniform("projection", MatrixProjections.GetOrthoProjection(640f / 480f, 1, 0, 5));
             Gl.DrawElements(0x004, 6, 0x1405, 0);
         }
         public static void Update()
